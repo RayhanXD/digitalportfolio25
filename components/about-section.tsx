@@ -14,7 +14,7 @@ const skills = [
 export function AboutSection() {
   return (
     <section id="about" className="min-h-screen py-32 px-6 observe flex items-center pt-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-10xl">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-6">
             <h2 className="text-5xl md:text-6xl font-bold">

@@ -28,20 +28,12 @@ const projects = [
     gradient: "from-pink-500 to-purple-500",
     impact: "200+ students trained",
   },
-  {
-    title: "Kairos AI Assistant",
-    description:
-      "Real-time AI guidance and market validation tool delivering automated feedback for startups and small businesses",
-    tags: ["OpenAI", "FastAPI", "Next.js", "Firestore"],
-    gradient: "from-cyan-500 to-blue-500",
-    impact: "7 local startups",
-  },
 ]
 
 export function WorkSection() {
   return (
     <section id="work" className="min-h-screen py-32 px-6 observe flex items-center pt-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-10xl">
         <div className="space-y-4 mb-16">
           <h2 className="text-5xl md:text-6xl font-bold">
             <span className="gradient-text">Featured Projects</span>

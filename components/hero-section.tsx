@@ -10,7 +10,7 @@ interface HeroSectionProps {
 export function HeroSection({ showContent }: HeroSectionProps) {
   return (
     <section id="hero" className="relative min-h-screen flex items-center justify-center px-6 pt-24">
-      <div className="container mx-auto max-w-6xl">
+      <div className="container mx-auto max-w-10xl">
         <div className="text-center space-y-12">
           <h1
             className={`text-6xl md:text-8xl font-bold tracking-tight text-balance transition-all duration-700 delay-200 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
