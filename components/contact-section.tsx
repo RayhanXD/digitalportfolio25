@@ -9,7 +9,7 @@ export function ContactSection() {
       <div className="container mx-auto max-w-10xl">
         <div className="text-center space-y-8">
           <h2 className="text-5xl md:text-6xl font-bold">
-            <span className="gradient-text">Let's Connect</span>
+            <span className="gradient-text">Let&apos;s Connect</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance leading-relaxed">
             Open to discussing AI projects, startup opportunities, and collaboration. Based in Austin, TX.
