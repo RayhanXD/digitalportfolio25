@@ -32,7 +32,7 @@ const projects = [
 
 export function WorkSection() {
   return (
-    <section id="work" className="min-h-screen py-32 px-6 observe flex items-center pt-24">
+    <section id="work" className="min-h-screen py-16 px-6 observe flex items-center pt-12">
       <div className="container mx-auto max-w-10xl">
         {/* Bento Box Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">

@@ -10,8 +10,8 @@ interface HeroSectionProps {
 export function HeroSection({ showContent }: HeroSectionProps) {
   return (
     <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
-      <div className="container mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="flex flex-col justify-center min-h-screen py-15">
+      <div className="container mx-auto max-w-10xl px-6 py-4 lg:px-12">
+        <div className="flex flex-col justify-center min-h-screen py-12">
           {/* Main Content - Centered */}
           <div
             className={`space-y-12 transition-all duration-700 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
@@ -24,8 +24,7 @@ export function HeroSection({ showContent }: HeroSectionProps) {
               </div>
 
               <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-none">
-                <span className="gradient-text block">Rayhan</span>
-                <span className="gradient-text block">Mohammad</span>
+                <span className="gradient-text">Rayhan Mohammad</span>
               </h1>
 
               <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl">
