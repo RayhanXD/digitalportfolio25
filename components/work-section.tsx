@@ -34,55 +34,78 @@ export function WorkSection() {
   return (
     <section id="work" className="min-h-screen py-32 px-6 observe flex items-center pt-24">
       <div className="container mx-auto max-w-10xl">
-        <div className="space-y-4 mb-16">
-          <h2 className="text-5xl md:text-6xl font-bold">
-            <span className="gradient-text">Featured Projects</span>
-          </h2>
-          <p className="text-xl text-muted-foreground">Production AI systems with measurable impact</p>
-        </div>
+        {/* Bento Box Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">
+          {/* Projects Row - Left side, spans 3 columns */}
+          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {projects.map((project, index) => (
+              <Card
+                key={index}
+                className="group relative overflow-hidden border-border/50 bg-card hover:border-primary/50 transition-all duration-500 cursor-pointer"
+              >
+                <div className="p-6 space-y-4 h-full flex flex-col">
+                  <div
+                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}
+                  />
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
-            <Card
-              key={index}
-              className="group relative overflow-hidden border-border/50 bg-card hover:border-primary/50 transition-all duration-500 cursor-pointer"
-            >
-              <div className="p-8 space-y-4">
+                  <h3 className="text-xl font-bold group-hover:gradient-text transition-all">{project.title}</h3>
+
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-grow">{project.description}</p>
+
+                  <div className="flex items-center gap-2 text-xs text-primary font-medium">
+                    <Award className="w-3 h-3" />
+                    <span>{project.impact}</span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1">
+                    {project.tags.slice(0, 2).map((tag, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground border border-border"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    {project.tags.length > 2 && (
+                      <span className="px-2 py-1 text-xs rounded-full bg-muted text-muted-foreground border border-border">
+                        +{project.tags.length - 2}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2 text-primary pt-2 group-hover:gap-3 transition-all">
+                    <span className="text-xs font-medium">View</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </div>
+                </div>
+
                 <div
-                  className={`w-16 h-16 rounded-xl bg-gradient-to-br ${project.gradient} opacity-80 group-hover:opacity-100 transition-opacity`}
+                  className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
                 />
+              </Card>
+            ))}
+          </div>
 
-                <h3 className="text-2xl font-bold group-hover:gradient-text transition-all">{project.title}</h3>
-
-                <p className="text-muted-foreground leading-relaxed">{project.description}</p>
-
-                <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                  <Award className="w-4 h-4" />
-                  <span>{project.impact}</span>
-                </div>
-
-                <div className="flex flex-wrap gap-2 pt-4">
-                  {project.tags.map((tag, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 text-xs rounded-full bg-muted text-muted-foreground border border-border"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="flex items-center gap-2 text-primary pt-4 group-hover:gap-4 transition-all">
-                  <span className="text-sm font-medium">View Project</span>
-                  <ArrowRight className="w-4 h-4" />
-                </div>
+          {/* Title Card - Right side, spans 1 column */}
+          <Card className="group relative overflow-hidden border-border/50 bg-card hover:border-primary/50 transition-all duration-500 cursor-pointer lg:col-span-1">
+            <div className="p-8 h-full flex flex-col justify-center space-y-6">
+              <div className="space-y-4">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+                  <span className="gradient-text">Featured Projects</span>
+                </h2>
+                <p className="text-lg text-muted-foreground">
+                  Production AI systems with measurable impact
+                </p>
               </div>
-
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}
-              />
-            </Card>
-          ))}
+              
+              <div className="flex items-center gap-2 text-primary pt-4 group-hover:gap-4 transition-all">
+                <span className="text-sm font-medium">Explore All Work</span>
+                <ArrowRight className="w-4 h-4" />
+              </div>
+            </div>
+            
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          </Card>
         </div>
       </div>
     </section>
