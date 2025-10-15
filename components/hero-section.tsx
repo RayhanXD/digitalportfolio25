@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Mail, Code2, Terminal, Sparkles, Zap } from "lucide-react"
+import { ArrowRight, Mail, Code2, Terminal, Sparkles, Zap, FileDown } from "lucide-react"
 
 interface HeroSectionProps {
   showContent: boolean
@@ -84,9 +84,9 @@ export function HeroSection({ showContent }: HeroSectionProps) {
               </Button>
 
               <Button size="lg" variant="outline" className="border-border hover:bg-muted/50 bg-transparent" asChild>
-                <a href="#contact" className="flex items-center justify-center">
-                  <Mail className="w-4 h-4 mr-2" />
-                  Get in Touch
+                <a href="/RAYHANM_RESUME.pdf" download className="flex items-center justify-center">
+                  <FileDown className="w-4 h-4 mr-2" />
+                  Download Resume
                 </a>
               </Button>
             </div>
