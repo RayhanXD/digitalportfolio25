@@ -1,5 +1,6 @@
 "use client"
 
+import { useCallback } from "react"
 import { Preloader } from "@/components/hud/preloader"
 import { SystemBar } from "@/components/hud/system-bar"
 import { TelemetryRail } from "@/components/hud/telemetry-rail"
@@ -20,9 +21,13 @@ import { ContactSection } from "@/components/sections/contact-section"
 function PortfolioContent() {
   const { isLoading, setIsLoading } = usePreloader()
 
+  const handlePreloaderComplete = useCallback(() => {
+    setIsLoading(false)
+  }, [setIsLoading])
+
   return (
     <>
-      {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+      {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
 
       <div
         className={`relative min-h-screen overflow-x-hidden bg-background hud-grid-bg transition-opacity duration-500 ${

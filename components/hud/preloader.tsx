@@ -21,20 +21,23 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
   useEffect(() => {
     setIsMounted(true)
     if (typeof window !== "undefined") {
-      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-      setPrefersReducedMotion(mediaQuery.matches)
+      try {
+        const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+        setPrefersReducedMotion(mediaQuery.matches)
+      } catch (error) {
+        console.error("Error checking reduced motion preference:", error)
+        setPrefersReducedMotion(false)
+      }
     }
   }, [])
 
+  // Absolute maximum timeout - ensures preloader always completes
   useEffect(() => {
-    if (!isMounted || hasCompletedRef.current) return
-
-    const duration = prefersReducedMotion ? 1500 : 3000
-    const startTime = Date.now()
+    if (!isMounted) return
     
-    // Safety timeout to ensure preloader completes even if interval fails
-    const safetyTimeout = setTimeout(() => {
+    const absoluteTimeout = setTimeout(() => {
       if (!hasCompletedRef.current) {
+        console.warn("Preloader timeout - forcing completion")
         hasCompletedRef.current = true
         setProgress(100)
         setIsExiting(true)
@@ -42,49 +45,112 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
           onComplete?.()
         }, 600)
       }
-    }, duration + 1000)
+    }, 5000) // 5 second absolute maximum
 
-    const progressInterval = setInterval(() => {
-      const elapsedTime = Date.now() - startTime
-      const newProgress = Math.min(100, Math.floor((elapsedTime / duration) * 100))
-      setProgress(newProgress)
-      setElapsed(elapsedTime)
+    return () => clearTimeout(absoluteTimeout)
+  }, [isMounted, onComplete])
 
-      if (newProgress >= 30 && newProgress < 60) {
-        setSubline("SYNCING TELEMETRY")
-      } else if (newProgress >= 60 && newProgress < 90) {
-        setSubline("LINKING SIGNALS")
-        if (!hasShownTargetLockRef.current) {
-          hasShownTargetLockRef.current = true
-          setShowTargetLock(true)
+  useEffect(() => {
+    if (!isMounted || hasCompletedRef.current) return
+
+    let progressInterval: NodeJS.Timeout | null = null
+    let safetyTimeout: NodeJS.Timeout | null = null
+    let isCleanedUp = false
+
+    try {
+      const duration = prefersReducedMotion ? 1500 : 3000
+      const startTime = Date.now()
+      
+      // Safety timeout to ensure preloader completes even if interval fails
+      safetyTimeout = setTimeout(() => {
+        if (!hasCompletedRef.current && !isCleanedUp) {
+          hasCompletedRef.current = true
+          setProgress(100)
+          setIsExiting(true)
+          setTimeout(() => {
+            if (!isCleanedUp) {
+              onComplete?.()
+            }
+          }, 600)
         }
-      } else if (newProgress >= 90) {
-        setSubline("FINALIZING BOOT")
-      }
+      }, duration + 1000)
 
-      if (newProgress >= 80) {
-        setStatusText("ONLINE")
-        setShowWarning(false)
-      }
+      progressInterval = setInterval(() => {
+        try {
+          if (isCleanedUp || hasCompletedRef.current) {
+            if (progressInterval) clearInterval(progressInterval)
+            return
+          }
 
-      if (newProgress >= 95 && !hasVerifiedChecksumRef.current) {
-        hasVerifiedChecksumRef.current = true
-        setChecksumVerified(true)
-      }
+          const elapsedTime = Date.now() - startTime
+          const newProgress = Math.min(100, Math.floor((elapsedTime / duration) * 100))
+          
+          setProgress(newProgress)
+          setElapsed(elapsedTime)
 
-      if (newProgress >= 100) {
-        clearInterval(progressInterval)
-        hasCompletedRef.current = true
-        setIsExiting(true)
-        setTimeout(() => {
+          if (newProgress >= 30 && newProgress < 60) {
+            setSubline("SYNCING TELEMETRY")
+          } else if (newProgress >= 60 && newProgress < 90) {
+            setSubline("LINKING SIGNALS")
+            if (!hasShownTargetLockRef.current) {
+              hasShownTargetLockRef.current = true
+              setShowTargetLock(true)
+            }
+          } else if (newProgress >= 90) {
+            setSubline("FINALIZING BOOT")
+          }
+
+          if (newProgress >= 80) {
+            setStatusText("ONLINE")
+            setShowWarning(false)
+          }
+
+          if (newProgress >= 95 && !hasVerifiedChecksumRef.current) {
+            hasVerifiedChecksumRef.current = true
+            setChecksumVerified(true)
+          }
+
+          if (newProgress >= 100) {
+            if (progressInterval) clearInterval(progressInterval)
+            hasCompletedRef.current = true
+            setIsExiting(true)
+            setTimeout(() => {
+              if (!isCleanedUp) {
+                onComplete?.()
+              }
+            }, 600)
+          }
+        } catch (error) {
+          console.error("Preloader interval error:", error)
+          // Force completion on error
+          if (progressInterval) clearInterval(progressInterval)
+          hasCompletedRef.current = true
+          setProgress(100)
+          setIsExiting(true)
+          setTimeout(() => {
+            if (!isCleanedUp) {
+              onComplete?.()
+            }
+          }, 600)
+        }
+      }, 16)
+    } catch (error) {
+      console.error("Preloader setup error:", error)
+      // Force immediate completion on setup error
+      hasCompletedRef.current = true
+      setProgress(100)
+      setIsExiting(true)
+      setTimeout(() => {
+        if (!isCleanedUp) {
           onComplete?.()
-        }, 600)
-      }
-    }, 16)
+        }
+      }, 600)
+    }
 
     return () => {
-      clearInterval(progressInterval)
-      clearTimeout(safetyTimeout)
+      isCleanedUp = true
+      if (progressInterval) clearInterval(progressInterval)
+      if (safetyTimeout) clearTimeout(safetyTimeout)
     }
   }, [isMounted, prefersReducedMotion, onComplete])
 
