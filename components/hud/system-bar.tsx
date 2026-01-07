@@ -40,7 +40,7 @@ export function SystemBar({ className }: SystemBarProps) {
       <div className="hidden md:flex items-center gap-2">
         <span className="hud-micro text-muted-foreground">MODE</span>
         <span className={cn("hud-micro", colorMap[currentColor])}>{currentColor.toUpperCase()}</span>
-        <span className="hud-micro text-muted-foreground mx-2">//</span>
+        <span className="hud-micro text-muted-foreground mx-2">{'//'}</span>
         <span className="hud-micro text-muted-foreground">SEC</span>
         <span className={cn("hud-micro", colorMap[currentColor])}>{currentSection}</span>
       </div>

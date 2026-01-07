@@ -9,6 +9,12 @@ interface DataStreamProps {
   speed?: "slow" | "normal" | "fast"
 }
 
+const speedMap = {
+  slow: 200,
+  normal: 100,
+  fast: 50,
+}
+
 export function DataStream({ className, color = "cyan", speed = "normal" }: DataStreamProps) {
   const [chars, setChars] = useState<string[]>(["0", "1", "0", "1", "1", "0", "1", "0"])
 
@@ -16,12 +22,6 @@ export function DataStream({ className, color = "cyan", speed = "normal" }: Data
     cyan: "text-hud-cyan",
     violet: "text-hud-violet",
     amber: "text-hud-amber",
-  }
-
-  const speedMap = {
-    slow: 200,
-    normal: 100,
-    fast: 50,
   }
 
   useEffect(() => {

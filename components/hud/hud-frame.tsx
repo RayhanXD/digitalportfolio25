@@ -25,12 +25,6 @@ export function HudFrame({
     amber: "border-hud-amber/20",
   }
 
-  const glowMap = {
-    cyan: "glow-cyan",
-    violet: "glow-violet",
-    amber: "glow-amber",
-  }
-
   return (
     <div
       className={cn(

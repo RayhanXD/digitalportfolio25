@@ -36,7 +36,7 @@ export function AboutSection() {
                 that scale. From RAG pipelines to multi-agent automation, I focus on what actually works in production.
               </p>
               <p>
-                I've trained 500+ professionals, supported 1,000+ students, and helped 100+ founders ship their ideas.
+                I&apos;ve trained 500+ professionals, supported 1,000+ students, and helped 100+ founders ship their ideas.
                 When I build, it ships. When I teach, people learn. When I lead, teams deliver.
               </p>
             </div>
