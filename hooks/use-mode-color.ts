@@ -28,18 +28,26 @@ export function useModeColor(sectionId?: string) {
   const currentColor = sectionId ? getModeColor(sectionId) : getModeColor(currentSection)
 
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === "undefined") return
+
     const handleScroll = () => {
-      const sections = document.querySelectorAll("[data-section-id]")
-      let activeSection = "01"
+      try {
+        const sections = document.querySelectorAll("[data-section-id]")
+        let activeSection = "01"
 
-      sections.forEach((section) => {
-        const rect = section.getBoundingClientRect()
-        if (rect.top <= window.innerHeight / 3) {
-          activeSection = section.getAttribute("data-section-id") || "01"
-        }
-      })
+        sections.forEach((section) => {
+          const rect = section.getBoundingClientRect()
+          if (rect.top <= window.innerHeight / 3) {
+            activeSection = section.getAttribute("data-section-id") || "01"
+          }
+        })
 
-      setCurrentSection(activeSection)
+        setCurrentSection(activeSection)
+      } catch (error) {
+        // Silently fail during SSR/static generation
+        console.error("Error in useModeColor scroll handler:", error)
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })

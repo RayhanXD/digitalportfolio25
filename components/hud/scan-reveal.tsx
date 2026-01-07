@@ -17,53 +17,65 @@ export function ScanReveal({ children, className, delay = 0, direction = "left" 
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    if (prefersReducedMotion) {
+    // Only run in browser environment
+    if (typeof window === "undefined") {
       setAnimationComplete(true)
       return
     }
 
-    // Start in "needs animation" state
-    setShouldAnimate(true)
-
-    const triggerAnimation = () => {
-      setTimeout(() => {
+    try {
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      if (prefersReducedMotion) {
         setAnimationComplete(true)
-      }, delay)
-    }
-
-    // Check if already in viewport
-    if (ref.current) {
-      const rect = ref.current.getBoundingClientRect()
-      const isInViewport = rect.top < window.innerHeight + 100 && rect.bottom > -100
-      if (isInViewport) {
-        triggerAnimation()
         return
       }
-    }
 
-    // Set up observer for elements not yet in viewport
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
+      // Start in "needs animation" state
+      setShouldAnimate(true)
+
+      const triggerAnimation = () => {
+        setTimeout(() => {
+          setAnimationComplete(true)
+        }, delay)
+      }
+
+      // Check if already in viewport
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect()
+        const isInViewport = rect.top < window.innerHeight + 100 && rect.bottom > -100
+        if (isInViewport) {
           triggerAnimation()
-          observer.disconnect()
+          return
         }
-      },
-      { threshold: 0.05, rootMargin: "100px" },
-    )
+      }
 
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
+      // Set up observer for elements not yet in viewport
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            triggerAnimation()
+            observer.disconnect()
+          }
+        },
+        { threshold: 0.05, rootMargin: "100px" },
+      )
 
-    const fallbackTimer = setTimeout(() => {
+      if (ref.current) {
+        observer.observe(ref.current)
+      }
+
+      const fallbackTimer = setTimeout(() => {
+        setAnimationComplete(true)
+      }, 2000)
+
+      return () => {
+        observer.disconnect()
+        clearTimeout(fallbackTimer)
+      }
+    } catch (error) {
+      // Silently fail during SSR/static generation
+      console.error("Error in ScanReveal:", error)
       setAnimationComplete(true)
-    }, 2000)
-
-    return () => {
-      observer.disconnect()
-      clearTimeout(fallbackTimer)
     }
   }, [delay])
 

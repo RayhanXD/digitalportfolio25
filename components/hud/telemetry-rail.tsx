@@ -14,11 +14,19 @@ export function TelemetryRail({ className }: TelemetryRailProps) {
   const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === "undefined") return
+
     const handleScroll = () => {
-      const scrollTop = window.scrollY
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
-      setScrollProgress(Math.round(progress))
+      try {
+        const scrollTop = window.scrollY
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
+        setScrollProgress(Math.round(progress))
+      } catch (error) {
+        // Silently fail during SSR/static generation
+        console.error("Error in TelemetryRail scroll handler:", error)
+      }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
