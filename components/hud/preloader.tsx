@@ -20,8 +20,10 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
 
   useEffect(() => {
     setIsMounted(true)
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setPrefersReducedMotion(mediaQuery.matches)
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+      setPrefersReducedMotion(mediaQuery.matches)
+    }
   }, [])
 
   useEffect(() => {
@@ -29,6 +31,18 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
 
     const duration = prefersReducedMotion ? 1500 : 3000
     const startTime = Date.now()
+    
+    // Safety timeout to ensure preloader completes even if interval fails
+    const safetyTimeout = setTimeout(() => {
+      if (!hasCompletedRef.current) {
+        hasCompletedRef.current = true
+        setProgress(100)
+        setIsExiting(true)
+        setTimeout(() => {
+          onComplete?.()
+        }, 600)
+      }
+    }, duration + 1000)
 
     const progressInterval = setInterval(() => {
       const elapsedTime = Date.now() - startTime
@@ -61,16 +75,17 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
       if (newProgress >= 100) {
         clearInterval(progressInterval)
         hasCompletedRef.current = true
+        setIsExiting(true)
         setTimeout(() => {
-          setIsExiting(true)
-          setTimeout(() => {
-            onComplete?.()
-          }, 600)
-        }, 200)
+          onComplete?.()
+        }, 600)
       }
     }, 16)
 
-    return () => clearInterval(progressInterval)
+    return () => {
+      clearInterval(progressInterval)
+      clearTimeout(safetyTimeout)
+    }
   }, [isMounted, prefersReducedMotion, onComplete])
 
   const formatElapsed = useCallback((ms: number) => {

@@ -40,7 +40,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${oxanium.variable} ${recursive.variable} ${jetbrainsMono.variable} antialiased`}>
+      <body
+        className={`${oxanium.variable} ${recursive.variable} ${jetbrainsMono.variable} antialiased`}
+        suppressHydrationWarning
+      >
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>
