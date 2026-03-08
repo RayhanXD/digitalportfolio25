@@ -17,6 +17,23 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
   const hasCompletedRef = useRef(false)
   const hasShownTargetLockRef = useRef(false)
   const hasVerifiedChecksumRef = useRef(false)
+  const onCompleteRef = useRef(onComplete)
+  onCompleteRef.current = onComplete
+
+  // Mount-independent fallback: ensures preloader always dismisses even if isMounted never becomes true (e.g. hydration failure on Vercel)
+  useEffect(() => {
+    const fallbackTimeout = setTimeout(() => {
+      if (!hasCompletedRef.current) {
+        hasCompletedRef.current = true
+        setProgress(100)
+        setIsExiting(true)
+        setTimeout(() => {
+          onCompleteRef.current?.()
+        }, 600)
+      }
+    }, 5500)
+    return () => clearTimeout(fallbackTimeout)
+  }, [])
 
   useEffect(() => {
     setIsMounted(true)
@@ -42,13 +59,13 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
         setProgress(100)
         setIsExiting(true)
         setTimeout(() => {
-          onComplete?.()
+          onCompleteRef.current?.()
         }, 600)
       }
     }, 5000) // 5 second absolute maximum
 
     return () => clearTimeout(absoluteTimeout)
-  }, [isMounted, onComplete])
+  }, [isMounted])
 
   useEffect(() => {
     if (!isMounted || hasCompletedRef.current) return
@@ -69,7 +86,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
           setIsExiting(true)
           setTimeout(() => {
             if (!isCleanedUp) {
-              onComplete?.()
+              onCompleteRef.current?.()
             }
           }, 600)
         }
@@ -116,7 +133,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
             setIsExiting(true)
             setTimeout(() => {
               if (!isCleanedUp) {
-                onComplete?.()
+                onCompleteRef.current?.()
               }
             }, 600)
           }
@@ -129,7 +146,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
           setIsExiting(true)
           setTimeout(() => {
             if (!isCleanedUp) {
-              onComplete?.()
+              onCompleteRef.current?.()
             }
           }, 600)
         }
@@ -142,7 +159,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
       setIsExiting(true)
       setTimeout(() => {
         if (!isCleanedUp) {
-          onComplete?.()
+          onCompleteRef.current?.()
         }
       }, 600)
     }
@@ -152,7 +169,7 @@ export function Preloader({ onComplete }: { onComplete?: () => void }) {
       if (progressInterval) clearInterval(progressInterval)
       if (safetyTimeout) clearTimeout(safetyTimeout)
     }
-  }, [isMounted, prefersReducedMotion, onComplete])
+  }, [isMounted, prefersReducedMotion])
 
   const formatElapsed = useCallback((ms: number) => {
     const seconds = Math.floor(ms / 1000)
