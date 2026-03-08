@@ -44,7 +44,7 @@ export function IdentitySection() {
               </a>
             </HudButton>
             <HudButton modeColor="cyan" variant="secondary" size="lg" asChild>
-              <a href="/resume.pdf" download="RAYHAN_MOHAMMAD_RESUME.pdf" className="inline-flex items-center gap-2">
+              <a href="/api/download-resume" className="inline-flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 RESUME
               </a>
