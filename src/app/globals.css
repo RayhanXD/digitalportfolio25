@@ -8,7 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -46,6 +46,25 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Singularity design system */
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1b1b1b;
+  --color-surface-container: #1f1f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353535;
+  --color-surface-dim: #131313;
+  --color-on-surface-singularity: #e2e2e2;
+  --color-on-surface-variant: #ccc3d8;
+  /* Space blue accent (replaces lavender); pairs with white + --color-tertiary-singularity orange */
+  --color-secondary-singularity: #78b4e8;
+  --color-tertiary-singularity: #ffb599;
+  --color-on-primary-fixed: #1a1c1c;
+  --color-on-secondary-singularity: #0c1a28;
+  --color-outline-variant: #4a4455;
+  --font-family-headline: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-family-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-family-label: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -126,5 +145,55 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Singularity utilities */
+@utility font-headline {
+  font-family: var(--font-family-headline);
+}
+
+@utility font-body-singularity {
+  font-family: var(--font-family-body);
+}
+
+@utility font-label {
+  font-family: var(--font-family-label);
+}
+
+@layer components {
+  .glass-panel {
+    background: rgba(53, 53, 53, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .event-horizon-glow {
+    box-shadow: 0 0 80px -20px rgba(120, 180, 232, 0.15);
+  }
+
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    color: transparent;
+  }
+
+  .void-gradient {
+    background: radial-gradient(circle at center, #131313 0%, #000000 100%);
+  }
+
+  .accretion-disk-glow {
+    background: radial-gradient(
+      circle at center,
+      rgba(120, 180, 232, 0.05) 0%,
+      transparent 70%
+    );
+  }
+
+  .glow-secondary:hover {
+    box-shadow: 0 0 40px -10px rgba(120, 180, 232, 0.4);
+  }
+
+  .glow-tertiary:hover {
+    box-shadow: 0 0 40px -10px rgba(255, 181, 153, 0.4);
   }
 }
