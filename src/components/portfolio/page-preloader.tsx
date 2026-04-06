@@ -1,14 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LightBeam } from "@stianlarsen/react-light-beam";
 import { SpiralAnimation } from "@/components/ui/spiral-animation";
 import { cn } from "@/lib/utils";
 
 const PRELOADER_WELCOME_WORD = "Welcome,";
 const PRELOADER_HEADLINE_REST = " to The Horizon";
-/** Time between each character’s animation start */
-const CHAR_STAGGER_MS = 45;
+/** Stagger for “Welcome,” only (intro + matching gaps in outro) */
+const WELCOME_CHAR_STAGGER_MS = 100;
+/** Stagger for “ to The Horizon” — unchanged from previous single speed */
+const CHAR_STAGGER_MS = 35;
 /** Must match `.preloader-char` animation duration in globals.css */
 const CHAR_DURATION_MS = 420;
 /** Pause after the last letter of “Welcome” finishes its reveal */
@@ -19,9 +21,26 @@ const OUTRO_START_MS = 7500;
 const PRELOADER_HEADLINE_CHAR_COUNT =
   PRELOADER_WELCOME_WORD.length + PRELOADER_HEADLINE_REST.length;
 
-/** Wall time for full outro: last char delay + char duration (matches intro timing math) */
-const OUTRO_SEQUENCE_MS =
-  (PRELOADER_HEADLINE_CHAR_COUNT - 1) * CHAR_STAGGER_MS + CHAR_DURATION_MS;
+const PRELOADER_WELCOME_LEN = PRELOADER_WELCOME_WORD.length;
+
+/** Stagger between char at `leftIndex` and `leftIndex + 1` (outro builds backward from the end). */
+function preloaderStaggerBetweenCharsMs(leftIndex: number): number {
+  if (leftIndex < PRELOADER_WELCOME_LEN - 1) return WELCOME_CHAR_STAGGER_MS;
+  return CHAR_STAGGER_MS;
+}
+
+/** Outro start delay for the character at `globalIndex` (0 = first char of full headline). */
+function preloaderOutroDelayMs(globalIndex: number): number {
+  const n = PRELOADER_HEADLINE_CHAR_COUNT;
+  let sum = 0;
+  for (let j = globalIndex; j < n - 1; j++) {
+    sum += preloaderStaggerBetweenCharsMs(j);
+  }
+  return sum;
+}
+
+/** Wall time for full outro: first char’s outro delay + char duration */
+const OUTRO_SEQUENCE_MS = preloaderOutroDelayMs(0) + CHAR_DURATION_MS;
 
 /** Overlay exit fade — keep in sync with root `duration-[1000ms]` below */
 const EXIT_FADE_MS = 1000;
@@ -35,12 +54,19 @@ const TEXT_OUTRO_END_MS = OUTRO_START_MS + OUTRO_SEQUENCE_MS;
  */
 const AUTO_DISMISS_MS = Math.max(0, TEXT_OUTRO_END_MS - EXIT_FADE_MS);
 
+/**
+ * Wall-clock deadline for auto-dismiss (performance.now()) across remounts.
+ * Without this, effect cleanup clears timeouts on every PagePreloader remount
+ * (hydration / layout / RSC boundaries), so dismiss can be pushed forever on Vercel.
+ */
+let preloaderAutoDismissDeadlineMs: number | null = null;
+
 export type PagePreloaderPhase = "run" | "exit" | "done";
 
 function preloaderRestCharBaseDelayMs(): number {
   const lastWelcomeIndex = PRELOADER_WELCOME_WORD.length - 1;
   const welcomeCompleteMs =
-    lastWelcomeIndex * CHAR_STAGGER_MS + CHAR_DURATION_MS;
+    lastWelcomeIndex * WELCOME_CHAR_STAGGER_MS + CHAR_DURATION_MS;
   return welcomeCompleteMs + PAUSE_AFTER_WELCOME_MS;
 }
 
@@ -52,17 +78,27 @@ export function PagePreloader({
   const [phase, setPhase] = useState<PagePreloaderPhase>("run");
   const [ctaVisible, setCtaVisible] = useState(false);
   const [outroActive, setOutroActive] = useState(false);
+  const dismissStartedRef = useRef(false);
 
   const dismiss = useCallback(() => {
+    if (dismissStartedRef.current) return;
+    dismissStartedRef.current = true;
     setPhase("exit");
     window.setTimeout(() => setPhase("done"), EXIT_FADE_MS);
   }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (preloaderAutoDismissDeadlineMs === null) {
+      preloaderAutoDismissDeadlineMs = performance.now() + AUTO_DISMISS_MS;
+    }
+    const dismissInMs = Math.max(
+      0,
+      preloaderAutoDismissDeadlineMs - performance.now()
+    );
     const tWelcome = window.setTimeout(() => setCtaVisible(true), 2000);
     const tOutro = window.setTimeout(() => setOutroActive(true), OUTRO_START_MS);
-    const tDismiss = window.setTimeout(() => dismiss(), AUTO_DISMISS_MS);
+    const tDismiss = window.setTimeout(() => dismiss(), dismissInMs);
     return () => {
       window.clearTimeout(tWelcome);
       window.clearTimeout(tOutro);
@@ -126,9 +162,7 @@ export function PagePreloader({
             <>
               {PRELOADER_WELCOME_WORD.split("").map((char, i) => {
                 const globalIndex = i;
-                const outroDelay =
-                  (PRELOADER_HEADLINE_CHAR_COUNT - 1 - globalIndex) *
-                  CHAR_STAGGER_MS;
+                const outroDelay = preloaderOutroDelayMs(globalIndex);
                 return (
                   <span
                     key={`w-${i}`}
@@ -139,7 +173,7 @@ export function PagePreloader({
                     style={{
                       animationDelay: outroActive
                         ? `${outroDelay}ms`
-                        : `${i * CHAR_STAGGER_MS}ms`,
+                        : `${i * WELCOME_CHAR_STAGGER_MS}ms`,
                     }}
                   >
                     {char}
@@ -148,9 +182,7 @@ export function PagePreloader({
               })}
               {PRELOADER_HEADLINE_REST.split("").map((char, i) => {
                 const globalIndex = PRELOADER_WELCOME_WORD.length + i;
-                const outroDelay =
-                  (PRELOADER_HEADLINE_CHAR_COUNT - 1 - globalIndex) *
-                  CHAR_STAGGER_MS;
+                const outroDelay = preloaderOutroDelayMs(globalIndex);
                 return (
                   <span
                     key={`r-${i}`}
