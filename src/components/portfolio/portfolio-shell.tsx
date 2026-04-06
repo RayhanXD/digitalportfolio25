@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DottedSurface } from "@/components/ui/dotted-surface";
+import { LocomotiveScrollProvider } from "@/components/portfolio/locomotive-scroll-provider";
 import { PagePreloader } from "@/components/portfolio/page-preloader";
 
 type NavIcon = ComponentType<{
@@ -92,7 +93,9 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
         <NavPill items={navRight} ariaLabel="Projects and contact" />
       </header>
 
-      <main className="relative z-0 min-h-screen w-full">{children}</main>
+      <main className="relative z-0 min-h-screen w-full">
+        <LocomotiveScrollProvider>{children}</LocomotiveScrollProvider>
+      </main>
 
       {pathname !== "/contact" && (
         <div className="pointer-events-none fixed bottom-6 right-5 z-50 md:bottom-10 md:right-10">
