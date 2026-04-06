@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -14,111 +14,88 @@ import { cn } from "@/lib/utils";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { PagePreloader } from "@/components/portfolio/page-preloader";
 
-const nav = [
+type NavIcon = ComponentType<{
+  className?: string;
+  strokeWidth?: number;
+  "aria-hidden"?: boolean;
+}>;
+
+type NavItem = { href: string; label: string; icon: NavIcon };
+
+const navLeft: readonly NavItem[] = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/projects", label: "Projects", icon: Grid3x3 },
   { href: "/about", label: "About", icon: User },
+];
+
+const navRight: readonly NavItem[] = [
+  { href: "/projects", label: "Projects", icon: Grid3x3 },
   { href: "/contact", label: "Contact", icon: Mail },
-] as const;
+];
+
+const navPillClass = "pointer-events-auto flex items-center gap-0.5 sm:gap-1";
+
+function NavPill({ items, ariaLabel }: { items: readonly NavItem[]; ariaLabel: string }) {
+  const pathname = usePathname();
+  return (
+    <nav className={navPillClass} aria-label={ariaLabel}>
+      {items.map((item) => {
+        const Icon = item.icon;
+        const active = pathname === item.href;
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-label={item.label}
+            aria-current={active ? "page" : undefined}
+            className={cn(
+              "flex size-9 items-center justify-center rounded-lg transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-white/50 sm:size-10",
+              active ? "text-white" : "text-neutral-500 hover:text-white"
+            )}
+          >
+            <Icon
+              className={cn(
+                "size-[17px] shrink-0 sm:size-[18px]",
+                active && "drop-shadow-[0_0_10px_rgba(255,255,255,0.35)]"
+              )}
+              strokeWidth={active ? 2.25 : 1.75}
+              aria-hidden
+            />
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
 
 export function PortfolioShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="relative min-h-screen bg-surface-container-lowest text-on-surface-singularity selection:bg-secondary-singularity selection:text-on-secondary-singularity">
+    <div
+      className={cn(
+        "relative min-h-screen text-on-surface-singularity selection:bg-secondary-singularity selection:text-on-secondary-singularity",
+        pathname !== "/" &&
+          "bg-surface-container-lowest bg-[radial-gradient(ellipse_120%_80%_at_100%_0%,rgba(120,180,232,0.06),transparent_50%),radial-gradient(ellipse_80%_60%_at_0%_100%,rgba(255,181,153,0.04),transparent_45%)]"
+      )}
+    >
       <PagePreloader />
-      <DottedSurface className="fixed inset-0 -z-20 opacity-40" aria-hidden />
+      <DottedSurface
+        className={cn(
+          "fixed inset-0 -z-20 opacity-40",
+          pathname === "/" && "hidden"
+        )}
+        aria-hidden
+      />
 
-      <aside className="fixed left-0 top-0 z-40 hidden h-full w-64 flex-col border-r border-white/10 bg-[#131313] p-6 lg:flex">
-        <div className="mb-12">
-          <h2 className="font-headline text-xl font-black uppercase text-white">
-            Rayhan Mohammad
-          </h2>
-          <p className="font-label mt-1 text-xs uppercase tracking-widest text-neutral-600">
-            Stats & CS · UT Austin
-          </p>
-        </div>
-        <nav className="flex flex-col gap-2">
-          {nav.map((item) => {
-            const Icon = item.icon;
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-4 rounded-md p-3 font-label text-xs uppercase tracking-widest transition-colors",
-                  active
-                    ? "bg-white/10 text-white"
-                    : "text-neutral-600 hover:bg-neutral-800"
-                )}
-              >
-                <Icon className="size-4 shrink-0" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-        <div className="mt-auto flex items-center gap-3 border-t border-white/5">
-          <div
-            className="flex size-8 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/5 font-headline text-[10px] font-bold tracking-tight text-white"
-            aria-hidden
-          >
-            RM
-          </div>
-          <div>
-            <p className="text-xs font-bold uppercase tracking-tight text-white">
-              Software & ML
-            </p>
-            <p className="text-[10px] uppercase text-neutral-500">
-              Open to roles
-            </p>
-          </div>
-        </div>
-      </aside>
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex w-full items-start justify-between px-3 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 sm:px-4 sm:pt-[max(1rem,env(safe-area-inset-top))] sm:pb-4 lg:px-5 lg:pt-[max(1.25rem,env(safe-area-inset-top))] lg:pb-5">
+        <NavPill items={navLeft} ariaLabel="Home and about" />
+        <NavPill items={navRight} ariaLabel="Projects and contact" />
+      </header>
 
-      <main className="min-h-screen lg:pl-64">
-        <div
-          className={cn(
-            pathname !== "/projects" &&
-              pathname !== "/about" &&
-              pathname !== "/contact" &&
-              "pb-24 md:pb-12 lg:pb-8",
-            pathname !== "/" &&
-              pathname !== "/projects" &&
-              pathname !== "/about" &&
-              pathname !== "/contact" &&
-              "pt-6 md:pt-8"
-          )}
-        >
-          {children}
-        </div>
-      </main>
-
-      <nav className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-around border-t border-white/5 bg-neutral-950/90 py-4 backdrop-blur-xl lg:hidden">
-        {nav.map((item) => {
-          const Icon = item.icon;
-          const active = pathname === item.href;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex flex-col items-center gap-1",
-                active ? "text-white" : "text-neutral-500"
-              )}
-            >
-              <Icon className="size-5" />
-              <span className="font-label text-[8px] uppercase">
-                {item.label === "Projects" ? "Works" : item.label}
-              </span>
-            </Link>
-          );
-        })}
-      </nav>
+      <main className="relative z-0 min-h-screen w-full">{children}</main>
 
       {pathname !== "/contact" && (
-        <div className="pointer-events-none fixed bottom-24 right-6 z-50 md:bottom-10 md:right-10">
+        <div className="pointer-events-none fixed bottom-6 right-5 z-50 md:bottom-10 md:right-10">
           <Link
             href="/contact"
             className="pointer-events-auto flex size-16 items-center justify-center rounded-full bg-white text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-transform hover:scale-110 active:scale-95"

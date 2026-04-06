@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function HomeCta() {
   return (
-    <section className="relative overflow-hidden px-6 py-32 text-center md:py-48">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom,rgba(255,181,153,0.1)_0%,transparent_50%)]" />
+    <section className="relative overflow-hidden py-28 text-center md:py-40 lg:py-48">
+      <div className="mx-auto max-w-screen-2xl px-5 sm:px-6 md:px-8 lg:px-10">
       <h2 className="font-headline mb-10 text-5xl font-black uppercase tracking-tighter text-white md:text-7xl lg:text-8xl">
         LET&apos;S <span className="text-outline">BUILD</span>
       </h2>
@@ -16,6 +16,7 @@ export function HomeCta() {
       >
         RAYHANM@UTEXAS.EDU
       </Link>
+      </div>
     </section>
   );
 }

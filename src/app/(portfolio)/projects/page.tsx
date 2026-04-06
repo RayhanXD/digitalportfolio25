@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <ProjectsWaveShell>
-      <div className="mx-auto max-w-7xl px-6 md:px-8">
+      <div className="mx-auto max-w-screen-2xl px-5 sm:px-6 md:px-8 lg:px-10">
         <header className="mb-16 md:mb-20">
           <p className="font-label mb-4 text-xs uppercase tracking-[0.35em] text-secondary-singularity">
             Projects
@@ -46,24 +46,20 @@ export default function ProjectsPage() {
               View
             </button>
           </div>
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 aspect-[3/2] w-[120%] max-w-none -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(120,180,232,0.2),transparent_65%)] opacity-40 transition-opacity duration-700 group-hover:opacity-60"
-          />
         </article>
 
-        <article className="glow-tertiary group relative flex min-h-[420px] flex-col justify-between bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-4">
+        <article className="glow-secondary group relative flex min-h-[380px] flex-col justify-between bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-4">
           <div className="absolute right-0 top-0 p-8">
-            <span className="font-label text-[10px] uppercase tracking-[0.3em] text-tertiary-singularity">
+            <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary-singularity">
               Project 02
             </span>
           </div>
           <div className="mt-auto">
             <h2 className="font-headline mb-4 text-2xl font-bold tracking-tight md:text-3xl">
-              SYNTRA
+              C.Y.R.U.S.
             </h2>
             <p className="mb-8 text-neutral-500">
-              React Native health app — Node.js/Express on AWS, 500 concurrent users at 99.8% uptime. HealthKit via Sahha SDK; 10,000+ daily data points for readiness insights.
+              Voice + gesture ML with MediaPipe and Keras — fused inputs and signal processing at ~85ms end-to-end. Hands-free control for media, IoT, and accessibility.
             </p>
             <button
               type="button"
@@ -74,18 +70,18 @@ export default function ProjectsPage() {
           </div>
         </article>
 
-        <article className="glow-secondary group relative flex min-h-[380px] flex-col justify-between bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-4">
+        <article className="glow-tertiary group relative flex min-h-[420px] flex-col justify-between bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-4">
           <div className="absolute right-0 top-0 p-8">
-            <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary-singularity">
+            <span className="font-label text-[10px] uppercase tracking-[0.3em] text-tertiary-singularity">
               Project 03
             </span>
           </div>
           <div className="mt-auto">
             <h2 className="font-headline mb-4 text-2xl font-bold tracking-tight md:text-3xl">
-              C.Y.R.U.S.
+              SYNTRA
             </h2>
             <p className="mb-8 text-neutral-500">
-              Voice + gesture ML with MediaPipe and Keras — fused inputs and signal processing at ~85ms end-to-end. Hands-free control for media, IoT, and accessibility.
+              React Native health app — Node.js/Express on AWS, 500 concurrent users at 99.8% uptime. HealthKit via Sahha SDK; 10,000+ daily data points for readiness insights.
             </p>
             <button
               type="button"
@@ -116,10 +112,6 @@ export default function ProjectsPage() {
               View
             </button>
           </div>
-          <div
-            aria-hidden
-            className="pointer-events-none absolute bottom-0 right-0 h-full w-2/3 bg-[linear-gradient(120deg,transparent_0%,rgba(255,255,255,0.04)_40%,rgba(255,181,153,0.1)_100%)] opacity-60 transition-opacity duration-700 group-hover:opacity-90"
-          />
         </article>
 
         <article className="glow-secondary group relative flex flex-col justify-between gap-12 bg-black/75 p-10 backdrop-blur-md transition-all duration-500 md:col-span-12 md:flex-row md:items-end md:p-12">
@@ -140,16 +132,7 @@ export default function ProjectsPage() {
               Highlights
             </button>
           </div>
-          <div className="relative h-64 w-full overflow-hidden bg-black/50 md:w-1/2">
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_30%_50%,rgba(120,180,232,0.15),transparent_60%),radial-gradient(ellipse_60%_50%_at_90%_80%,rgba(255,181,153,0.08),transparent_55%)] transition-transform duration-[2s] group-hover:scale-[1.02]"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.5),transparent_40%)]"
-            />
-          </div>
+          <div className="relative h-64 w-full overflow-hidden bg-black md:w-1/2" />
         </article>
       </div>
 

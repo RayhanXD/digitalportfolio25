@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { AboutMatrixShell } from "@/components/portfolio/about-matrix-shell";
@@ -8,6 +9,9 @@ export const metadata: Metadata = {
   description:
     "Rayhan Mohammad — education, experience, and technical skills in software and machine learning.",
 };
+
+/** Matches `public/about-portrait.png` pixel dimensions. */
+const ABOUT_PORTRAIT = { width: 1024, height: 650 } as const;
 
 const skills = [
   "Python",
@@ -27,7 +31,7 @@ const skills = [
 export default function AboutPage() {
   return (
     <AboutMatrixShell>
-      <div className="mx-auto max-w-screen-2xl px-6 pb-12 md:px-8">
+      <div className="mx-auto max-w-screen-2xl px-5 pb-12 sm:px-6 md:px-8 lg:px-10">
         <p className="font-label mb-10 text-xs uppercase tracking-[0.35em] text-secondary-singularity">
           About
         </p>
@@ -47,14 +51,19 @@ export default function AboutPage() {
           </div>
         </div>
         <div className="relative flex justify-end lg:col-span-4">
-          <div className="relative aspect-[3/4] w-full max-w-md overflow-hidden rounded-lg bg-surface-container-low">
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_50%_30%,rgba(120,180,232,0.22),transparent_55%),linear-gradient(165deg,rgba(255,255,255,0.06),transparent_50%)]"
-            />
-            <div
-              aria-hidden
-              className="absolute inset-0 opacity-[0.15] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:24px_24px]"
+          <div
+            className="relative w-full max-w-md overflow-hidden rounded-lg bg-surface-container-low"
+            style={{
+              aspectRatio: `${ABOUT_PORTRAIT.width} / ${ABOUT_PORTRAIT.height}`,
+            }}
+          >
+            <Image
+              src="/about-portrait.png"
+              alt="Rayhan Mohammad"
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 1024px) 100vw, 28rem"
+              priority
             />
           </div>
           <div className="absolute -z-10 left-1/2 top-1/2 size-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-secondary-singularity/10 blur-[100px]" />

@@ -2,6 +2,7 @@ import { HomeHero } from "@/components/portfolio/home-hero";
 import { HomeBento } from "@/components/portfolio/home-bento";
 import { HomeStats } from "@/components/portfolio/home-stats";
 import { HomeCta } from "@/components/portfolio/home-cta";
+import { HomePageBackground } from "@/components/portfolio/home-page-background";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,11 +13,14 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <>
-      <HomeHero />
-      <HomeBento />
-      <HomeStats />
-      <HomeCta />
-    </>
+    <div className="relative">
+      <HomePageBackground />
+      <div className="relative z-10">
+        <HomeHero />
+        <HomeBento />
+        <HomeStats />
+        <HomeCta />
+      </div>
+    </div>
   );
 }

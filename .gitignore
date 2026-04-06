@@ -24,6 +24,9 @@
 .DS_Store
 *.pem
 
+# Over GitHub 100MB limit — keep locally or host elsewhere
+public/all-projects-bg.mp4
+
 # debug
 npm-debug.log*
 yarn-debug.log*

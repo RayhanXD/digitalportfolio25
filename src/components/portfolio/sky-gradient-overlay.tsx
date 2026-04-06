@@ -14,9 +14,16 @@ const SKY_TINT_MULTIPLY_SUBTLE =
 const SKY_TINT_COLOR_SUBTLE =
   "linear-gradient(135deg, rgba(95, 135, 178, 0.22) 0%, rgba(248, 250, 252, 0.2) 12.5%, rgba(232, 196, 175, 0.26) 25%, rgba(95, 135, 178, 0.22) 37.5%, rgba(248, 250, 252, 0.2) 50%, rgba(232, 196, 175, 0.26) 62.5%, rgba(95, 135, 178, 0.22) 75%, rgba(248, 250, 252, 0.2) 87.5%, rgba(232, 196, 175, 0.26) 100%)";
 
+/** Same diagonal pattern as default — slightly richer stops for multiply + stronger color pass (about + matrix). */
+const SKY_TINT_MULTIPLY_VIBRANT =
+  "linear-gradient(135deg, #0a3a6e 0%, #ffffff 12.5%, #ff9a6b 25%, #0a3a6e 37.5%, #ffffff 50%, #ff9a6b 62.5%, #0a3a6e 75%, #ffffff 87.5%, #ff9a6b 100%)";
+
+const SKY_TINT_COLOR_VIBRANT =
+  "linear-gradient(135deg, rgba(61, 110, 168, 0.55) 0%, rgba(255, 255, 255, 0.45) 12.5%, rgba(255, 140, 100, 0.58) 25%, rgba(61, 110, 168, 0.55) 37.5%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 140, 100, 0.58) 62.5%, rgba(61, 110, 168, 0.55) 75%, rgba(255, 255, 255, 0.45) 87.5%, rgba(255, 140, 100, 0.58) 100%)";
+
 export type SkyGradientOverlayProps = {
-  /** `subtle` = muted blue/peach and lighter color pass (e.g. about + matrix). */
-  variant?: "default" | "subtle";
+  /** `subtle` = muted blue/peach. `vibrant` = stronger blue/white/orange (e.g. about + matrix). */
+  variant?: "default" | "subtle" | "vibrant";
 };
 
 /**
@@ -25,11 +32,23 @@ export type SkyGradientOverlayProps = {
  */
 export function SkyGradientOverlay({ variant = "default" }: SkyGradientOverlayProps) {
   const multiply =
-    variant === "subtle" ? SKY_TINT_MULTIPLY_SUBTLE : SKY_TINT_MULTIPLY;
+    variant === "subtle"
+      ? SKY_TINT_MULTIPLY_SUBTLE
+      : variant === "vibrant"
+        ? SKY_TINT_MULTIPLY_VIBRANT
+        : SKY_TINT_MULTIPLY;
   const color =
-    variant === "subtle" ? SKY_TINT_COLOR_SUBTLE : SKY_TINT_COLOR;
+    variant === "subtle"
+      ? SKY_TINT_COLOR_SUBTLE
+      : variant === "vibrant"
+        ? SKY_TINT_COLOR_VIBRANT
+        : SKY_TINT_COLOR;
   const vignette =
-    variant === "subtle" ? "from-transparent via-transparent to-black/22" : "from-transparent via-transparent to-black/30";
+    variant === "subtle"
+      ? "from-transparent via-transparent to-black/22"
+      : variant === "vibrant"
+        ? "from-transparent via-transparent to-black/14"
+        : "from-transparent via-transparent to-black/30";
 
   return (
     <>

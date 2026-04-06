@@ -7,7 +7,7 @@ export function HomeBento() {
   return (
     <section
       id="work"
-      className="mx-auto max-w-7xl scroll-mt-8 px-6 py-24 md:px-8 md:py-32"
+      className="mx-auto max-w-screen-2xl scroll-mt-[calc(env(safe-area-inset-top)+5rem)] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-10"
     >
       <div className="mb-16 flex flex-col justify-between gap-8 md:mb-24 md:flex-row md:items-end">
         <div className="max-w-2xl">
@@ -31,15 +31,18 @@ export function HomeBento() {
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
         <div className="group relative aspect-[16/9] overflow-hidden rounded-lg bg-surface-container-low event-horizon-glow md:col-span-8">
-          <div
+          <video
+            className="absolute inset-0 h-full w-full scale-105 object-cover transition-transform duration-700 group-hover:scale-[1.08]"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
             aria-hidden
-            className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_20%_40%,rgba(120,180,232,0.18),transparent_55%),radial-gradient(ellipse_70%_50%_at_85%_75%,rgba(255,181,153,0.08),transparent_50%)] opacity-90 transition-transform duration-700 group-hover:scale-[1.02]"
-          />
-          <div
-            aria-hidden
-            className="absolute -right-24 top-0 size-[min(55vw,420px)] rounded-full bg-secondary-singularity/20 blur-[80px] transition-opacity duration-700 group-hover:opacity-90"
-          />
-          <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-6 md:p-10">
+          >
+            <source src="/wave-lattice-card.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 [&_h3]:drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)] [&_p]:drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)] [&>span]:drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             <span className="font-label mb-3 text-xs uppercase tracking-widest text-secondary-singularity">
               Campus Connect AI
             </span>
@@ -61,39 +64,46 @@ export function HomeBento() {
         </div>
 
         <div className="group relative min-h-[280px] overflow-hidden rounded-lg bg-surface-container-low md:col-span-4 md:min-h-0">
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-[linear-gradient(145deg,rgba(255,255,255,0.04)_0%,transparent_45%),radial-gradient(circle_at_80%_20%,rgba(120,180,232,0.12),transparent_50%)] transition-transform duration-700 group-hover:scale-[1.02]"
-          />
-          <div
-            aria-hidden
-            className="absolute bottom-0 left-0 h-32 w-32 rounded-tr-[100%] border-t border-l border-white/10"
-          />
-          <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 to-transparent p-6 md:p-8">
-            <span className="font-label mb-2 text-xs uppercase tracking-widest text-tertiary-singularity">
-              Syntra
+          <div className="absolute inset-0 overflow-hidden">
+            <video
+              className="h-full w-full min-h-full min-w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-hidden
+            >
+              <source src="/agentic-search.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 [&_h3]:drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)] [&>span]:drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
+            <span className="font-label mb-2 text-xs uppercase tracking-widest text-secondary-singularity">
+              C.Y.R.U.S.
             </span>
             <h3 className="font-headline text-xl font-bold uppercase text-white md:text-2xl">
-              Health &amp; APIs
+              Voice + gesture ML
             </h3>
           </div>
         </div>
 
         <div className="group relative aspect-[21/9] min-h-[200px] overflow-hidden rounded-lg bg-black md:col-span-12">
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            aria-hidden
-          >
-            <source src="/wave-lattice-card.mp4" type="video/mp4" />
-          </video>
-          <div className="pointer-events-none absolute inset-0 flex items-center justify-between bg-gradient-to-r from-black/50 via-black/25 to-transparent p-6 md:p-10">
+          <div className="absolute inset-0 overflow-hidden transition-transform duration-700 group-hover:scale-[1.08]">
+            <video
+              className="absolute left-1/2 top-1/2 h-auto w-auto min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-hidden
+            >
+              <source src="/all-projects-bg.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-between p-6 md:p-10 [&_h3]:drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)] [&_span]:drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
             <div>
-              <span className="font-label mb-2 block text-xs uppercase tracking-widest text-neutral-500">
+              <span className="font-label mb-2 block text-xs uppercase tracking-widest text-neutral-300">
                 Full portfolio
               </span>
               <h3 className="font-headline text-2xl font-bold uppercase text-white md:text-3xl">

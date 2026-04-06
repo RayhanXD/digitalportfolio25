@@ -2,8 +2,8 @@ import Link from "next/link";
 
 export function HomeStats() {
   return (
-    <section className="border-y border-white/5 bg-surface-container-lowest px-6 py-24 md:px-8 md:py-32">
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-12 md:flex-row md:gap-16">
+    <section className="border-y border-white/5 px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-10">
+      <div className="mx-auto flex max-w-screen-2xl flex-col items-center gap-12 md:flex-row md:gap-16">
         <div className="flex-1">
           <h4 className="font-label mb-8 text-sm uppercase tracking-[0.3em] text-secondary-singularity">
             In one line
