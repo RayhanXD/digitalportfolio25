@@ -8,6 +8,16 @@ export const metadata: Metadata = {
     "Selected projects — agentic search, health tech, ML for accessibility, and quantitative finance.",
 };
 
+/** Live / repo URLs from resume (PDF link annotations), plus event post for Project 05 */
+const PROJECT_LINKS = {
+  campusConnectAi: "https://www.campusconnectai.org/",
+  cyrus: "https://github.com/RayhanXD/C.Y.R.U.S.",
+  syntra: "https://github.com/RayhanXD/Syntra",
+  tradex: "https://tradex-frontend-ruby.vercel.app/",
+  escapeMccombsHackathon:
+    "https://www.linkedin.com/posts/texas-business-analytics-association_escape-mccombs-fall-2025-activity-7396641799932600320-Nzue/",
+} as const;
+
 export default function ProjectsPage() {
   return (
     <ProjectsWaveShell>
@@ -39,12 +49,14 @@ export default function ProjectsPage() {
             <p className="mb-8 max-w-md text-neutral-500">
               Agentic search for 1,000+ students — React, Python, FastAPI, NLP, vector embeddings, PostgreSQL. ~92% relevance; 55% lower query latency via caching and query tuning.
             </p>
-            <button
-              type="button"
-              className="font-label bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
+            <a
+              href={PROJECT_LINKS.campusConnectAi}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-label inline-block bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
             >
               View
-            </button>
+            </a>
           </div>
         </article>
 
@@ -61,12 +73,14 @@ export default function ProjectsPage() {
             <p className="mb-8 text-neutral-500">
               Voice + gesture ML with MediaPipe and Keras — fused inputs and signal processing at ~85ms end-to-end. Hands-free control for media, IoT, and accessibility.
             </p>
-            <button
-              type="button"
-              className="font-label bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
+            <a
+              href={PROJECT_LINKS.cyrus}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-label inline-block bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
             >
               View
-            </button>
+            </a>
           </div>
         </article>
 
@@ -83,12 +97,14 @@ export default function ProjectsPage() {
             <p className="mb-8 text-neutral-500">
               React Native health app — Node.js/Express on AWS, 500 concurrent users at 99.8% uptime. HealthKit via Sahha SDK; 10,000+ daily data points for readiness insights.
             </p>
-            <button
-              type="button"
-              className="font-label bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
+            <a
+              href={PROJECT_LINKS.syntra}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-label inline-block bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
             >
               View
-            </button>
+            </a>
           </div>
         </article>
 
@@ -105,12 +121,14 @@ export default function ProjectsPage() {
             <p className="mb-8 max-w-sm text-neutral-500">
               Portfolio optimizer — FastAPI backend, Next.js frontend, Black-Litterman and optimization. Backtested across 10+ market scenarios (NumPy, SciPy).
             </p>
-            <button
-              type="button"
-              className="font-label bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-tertiary-singularity"
+            <a
+              href={PROJECT_LINKS.tradex}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-label inline-block bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-tertiary-singularity"
             >
               View
-            </button>
+            </a>
           </div>
         </article>
 
@@ -125,12 +143,15 @@ export default function ProjectsPage() {
             <p className="mb-8 text-lg leading-relaxed text-neutral-400">
               1st place out of 150+ teams — engineered an ML pipeline with vectorized NumPy solvers and Keras baselines for the McCombs School of Business hackathon (Nov 2025).
             </p>
-            <button
-              type="button"
-              className="font-label bg-white px-12 py-4 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
+            <a
+              href={PROJECT_LINKS.escapeMccombsHackathon}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-label inline-block bg-white px-12 py-4 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
+              aria-label="Highlights — BAXA Escape McCombs Fall 2025 (LinkedIn)"
             >
               Highlights
-            </button>
+            </a>
           </div>
           <div className="relative h-64 w-full overflow-hidden bg-black md:w-1/2" />
         </article>

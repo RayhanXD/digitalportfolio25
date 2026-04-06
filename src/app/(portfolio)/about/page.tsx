@@ -31,6 +31,7 @@ const skills = [
 export default function AboutPage() {
   return (
     <AboutMatrixShell>
+      <>
       <div className="mx-auto max-w-screen-2xl px-5 pb-12 sm:px-6 md:px-8 lg:px-10">
         <p className="font-label mb-10 text-xs uppercase tracking-[0.35em] text-secondary-singularity">
           About
@@ -177,13 +178,14 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+      </div>
 
-      <section className="relative overflow-hidden rounded-lg bg-black/60 py-20 text-center backdrop-blur-md md:py-24">
+      <section className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip bg-black/60 pb-[max(5rem,env(safe-area-inset-bottom))] pt-20 text-center backdrop-blur-md md:pb-[max(6rem,env(safe-area-inset-bottom))] md:pt-24">
         <div className="pointer-events-none absolute inset-0 opacity-20">
           <div className="absolute -left-1/2 -top-1/2 size-full bg-secondary-singularity blur-[160px]" />
           <div className="absolute -bottom-1/2 -right-1/2 size-full bg-tertiary-singularity blur-[160px]" />
         </div>
-        <div className="relative z-10">
+        <div className="relative z-10 mx-auto max-w-screen-2xl px-5 sm:px-6 md:px-8 lg:px-10">
           <h2 className="font-headline mb-8 text-4xl font-extrabold tracking-tighter text-white md:text-6xl lg:text-7xl">
             LET&apos;S CONNECT.
           </h2>
@@ -198,7 +200,7 @@ export default function AboutPage() {
           </Link>
         </div>
       </section>
-      </div>
+      </>
     </AboutMatrixShell>
   );
 }

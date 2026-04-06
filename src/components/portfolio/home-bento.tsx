@@ -64,7 +64,7 @@ export function HomeBento() {
         </div>
 
         <div className="group relative min-h-[280px] overflow-hidden rounded-lg bg-surface-container-low md:col-span-4 md:min-h-0">
-          <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 -scale-x-100 overflow-hidden">
             <video
               className="h-full w-full min-h-full min-w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
               autoPlay

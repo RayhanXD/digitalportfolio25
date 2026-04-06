@@ -8,7 +8,6 @@ import {
   Grid3x3,
   Home,
   Mail,
-  Rocket,
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -111,18 +110,6 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
           <LocomotiveScrollProvider>{children}</LocomotiveScrollProvider>
         </div>
       </main>
-
-      {pathname !== "/contact" && (
-        <div className="pointer-events-none fixed bottom-6 right-5 z-50 md:bottom-10 md:right-10">
-          <Link
-            href="/contact"
-            className="pointer-events-auto flex size-16 items-center justify-center rounded-full bg-white text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] transition-transform hover:scale-110 active:scale-95"
-            aria-label="Contact"
-          >
-            <Rocket className="size-7" strokeWidth={2.5} />
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
