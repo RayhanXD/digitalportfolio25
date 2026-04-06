@@ -1,6 +1,7 @@
 "use client";
 
 import type { ComponentType, ReactNode } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -13,7 +14,10 @@ import {
 import { cn } from "@/lib/utils";
 import { DottedSurface } from "@/components/ui/dotted-surface";
 import { LocomotiveScrollProvider } from "@/components/portfolio/locomotive-scroll-provider";
-import { PagePreloader } from "@/components/portfolio/page-preloader";
+import {
+  PagePreloader,
+  type PagePreloaderPhase,
+} from "@/components/portfolio/page-preloader";
 
 type NavIcon = ComponentType<{
   className?: string;
@@ -70,6 +74,8 @@ function NavPill({ items, ariaLabel }: { items: readonly NavItem[]; ariaLabel: s
 
 export function PortfolioShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const [preloaderPhase, setPreloaderPhase] =
+    useState<PagePreloaderPhase>("run");
 
   return (
     <div
@@ -79,7 +85,7 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
           "bg-surface-container-lowest bg-[radial-gradient(ellipse_120%_80%_at_100%_0%,rgba(120,180,232,0.06),transparent_50%),radial-gradient(ellipse_80%_60%_at_0%_100%,rgba(255,181,153,0.04),transparent_45%)]"
       )}
     >
-      <PagePreloader />
+      <PagePreloader onPhaseChange={setPreloaderPhase} />
       <DottedSurface
         className={cn(
           "fixed inset-0 -z-20 opacity-40",
@@ -94,7 +100,16 @@ export function PortfolioShell({ children }: { children: ReactNode }) {
       </header>
 
       <main className="relative z-0 min-h-screen w-full">
-        <LocomotiveScrollProvider>{children}</LocomotiveScrollProvider>
+        <div
+          className={cn(
+            "transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transform-none motion-reduce:transition-none",
+            preloaderPhase === "run"
+              ? "translate-y-[8px] motion-reduce:translate-y-0"
+              : "translate-y-0"
+          )}
+        >
+          <LocomotiveScrollProvider>{children}</LocomotiveScrollProvider>
+        </div>
       </main>
 
       {pathname !== "/contact" && (

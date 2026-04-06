@@ -198,4 +198,157 @@
   .glow-tertiary:hover {
     box-shadow: 0 0 40px -10px rgba(255, 181, 153, 0.4);
   }
+
+  /* Preloader headline + Enter: same motion as translate-y-4 → 0 + opacity (700ms ease) */
+  @keyframes preloader-cta-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .preloader-cta-reveal {
+    animation: preloader-cta-reveal 700ms ease forwards;
+  }
+
+  /* Preloader headline: staggered per-character reveal */
+  @keyframes preloader-char-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(0.4em);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .preloader-char {
+    display: inline-block;
+    will-change: opacity, transform;
+  }
+
+  .preloader-char-in {
+    opacity: 0;
+    animation: preloader-char-reveal 420ms ease forwards;
+  }
+
+  @keyframes preloader-char-out {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-0.4em);
+    }
+  }
+
+  .preloader-char-out {
+    animation: preloader-char-out 420ms ease forwards;
+  }
+
+  /*
+   * Preloader + LightBeam: intensity only increases, then holds (no fade-down during text outro).
+   * opacity = 2^x - 1, x = p^0.3, p = linear progress 0→1.
+   */
+  @keyframes preloader-light-beam-intensity {
+    0% {
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.415;
+    }
+    20% {
+      opacity: 0.534;
+    }
+    30% {
+      opacity: 0.621;
+    }
+    40% {
+      opacity: 0.693;
+    }
+    50% {
+      opacity: 0.756;
+    }
+    60% {
+      opacity: 0.812;
+    }
+    70% {
+      opacity: 0.864;
+    }
+    80% {
+      opacity: 0.912;
+    }
+    90% {
+      opacity: 0.957;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Bottom-anchored column: flip so package top-anchored gradients sit on the viewport bottom */
+  .preloader-light-beam-stack {
+    contain: layout style;
+  }
+
+  .preloader-light-beam-flip {
+    position: absolute;
+    inset: 0;
+    transform: scaleY(-1);
+    transform-origin: center;
+    isolation: isolate;
+  }
+
+  .preloader-light-beam-intensity {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    animation-name: preloader-light-beam-intensity;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    will-change: opacity;
+  }
+
+  .preloader-light-beam-layer.react__light__beam {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .preloader-cta-reveal {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .preloader-char-in {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      will-change: auto;
+    }
+
+    .preloader-char-out {
+      animation: none;
+      opacity: 0;
+      transform: none;
+      will-change: auto;
+    }
+
+    .preloader-light-beam-intensity {
+      animation: none;
+      opacity: 0.42;
+    }
+  }
 }
