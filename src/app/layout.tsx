@@ -20,6 +20,11 @@ export const metadata: Metadata = {
   },
   description:
     "Software engineer and ML builder — multi-agent AI platforms, RAG pipelines, and production systems. UT Austin Computer Science and Statistics & Data Science.",
+  icons: {
+    icon: "/galaxy.png",
+    shortcut: "/galaxy.png",
+    apple: "/galaxy.png",
+  },
 };
 
 export default function RootLayout({
