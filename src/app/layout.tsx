@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | Rayhan Mohammad",
   },
   description:
-    "Software engineer and ML builder — full-stack product, agentic AI, and data systems. UT Austin Statistics & Data Science and Computer Science.",
+    "Software engineer and ML builder — multi-agent AI platforms, RAG pipelines, and production systems. UT Austin Computer Science and Statistics & Data Science.",
 };
 
 export default function RootLayout({

@@ -1,8 +1,14 @@
 "use client";
 
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
 import type LocomotiveScroll from "locomotive-scroll";
+
+const LocomotiveScrollContext = createContext<LocomotiveScroll | null>(null);
+
+export function useLocomotiveScrollInstance() {
+  return useContext(LocomotiveScrollContext);
+}
 
 export function LocomotiveScrollProvider({
   children,
@@ -11,6 +17,7 @@ export function LocomotiveScrollProvider({
 }) {
   const pathname = usePathname();
   const scrollRef = useRef<LocomotiveScroll | null>(null);
+  const [instance, setInstance] = useState<LocomotiveScroll | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -37,6 +44,7 @@ export function LocomotiveScrollProvider({
         return;
       }
       scrollRef.current = scroll;
+      setInstance(scroll);
 
       resizeObserver = new ResizeObserver(() => {
         scroll?.resize();
@@ -52,6 +60,7 @@ export function LocomotiveScrollProvider({
       resizeObserver?.disconnect();
       scroll?.destroy();
       scrollRef.current = null;
+      setInstance(null);
     };
   }, []);
 
@@ -64,5 +73,9 @@ export function LocomotiveScrollProvider({
     return () => cancelAnimationFrame(id);
   }, [pathname]);
 
-  return <>{children}</>;
+  return (
+    <LocomotiveScrollContext.Provider value={instance}>
+      {children}
+    </LocomotiveScrollContext.Provider>
+  );
 }

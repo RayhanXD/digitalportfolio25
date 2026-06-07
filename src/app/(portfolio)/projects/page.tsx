@@ -5,17 +5,16 @@ import { ProjectsWaveShell } from "@/components/portfolio/projects-wave-shell";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Selected projects — agentic search, health tech, ML for accessibility, and quantitative finance.",
+    "Selected projects — LangGraph multi-agent systems, agentic search, multimodal ML, and production health APIs.",
 };
 
-/** Live / repo URLs from resume (PDF link annotations), plus event post for Project 05 */
+/** Live / repo URLs from resume (PDF link annotations) */
 const PROJECT_LINKS = {
+  keystone: "https://github.com/RayhanXD",
+  raygent: "https://github.com/RayhanXD",
   campusConnectAi: "https://www.campusconnectai.org/",
   cyrus: "https://github.com/RayhanXD/C.Y.R.U.S.",
   syntra: "https://github.com/RayhanXD/Syntra",
-  tradex: "https://tradex-frontend-ruby.vercel.app/",
-  escapeMccombsHackathon:
-    "https://www.linkedin.com/posts/texas-business-analytics-association_escape-mccombs-fall-2025-activity-7396641799932600320-Nzue/",
 } as const;
 
 export default function ProjectsPage() {
@@ -31,7 +30,8 @@ export default function ProjectsPage() {
           </h1>
           <div className="mb-8 h-0.5 w-24 bg-secondary-singularity" />
           <p className="max-w-xl text-lg leading-relaxed text-neutral-300">
-            Full-stack and ML builds — semantic search at campus scale, health APIs on AWS, multimodal ML, and portfolio optimization.
+            Multi-agent orchestration, agentic search at campus scale, multimodal ML, and production
+            health APIs — built for measurable impact.
           </p>
         </header>
 
@@ -44,13 +44,14 @@ export default function ProjectsPage() {
           </div>
           <div className="relative z-10 mt-auto">
             <h2 className="font-headline mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-              CAMPUS CONNECT AI
+              KEYSTONE
             </h2>
             <p className="mb-8 max-w-md text-neutral-500">
-              Agentic search for 1,000+ students — React, Python, FastAPI, NLP, vector embeddings, PostgreSQL. ~92% relevance; 55% lower query latency via caching and query tuning.
+              Won Best Overall at HBA×CSBA Hack Day — LangGraph/Gemini multi-agent real estate platform
+              built in 5 hours. Python, FastAPI, React, multi-agent orchestration.
             </p>
             <a
-              href={PROJECT_LINKS.campusConnectAi}
+              href={PROJECT_LINKS.keystone}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
@@ -68,13 +69,14 @@ export default function ProjectsPage() {
           </div>
           <div className="mt-auto">
             <h2 className="font-headline mb-4 text-2xl font-bold tracking-tight md:text-3xl">
-              C.Y.R.U.S.
+              RAYGENT
             </h2>
             <p className="mb-8 text-neutral-500">
-              Voice + gesture ML with MediaPipe and Keras — fused inputs and signal processing at ~85ms end-to-end. Hands-free control for media, IoT, and accessibility.
+              Real-time multi-agent inspection via LangGraph visualizer on React/Next.js with NVIDIA
+              Nemotron. TypeScript, Python, LangGraph.
             </p>
             <a
-              href={PROJECT_LINKS.cyrus}
+              href={PROJECT_LINKS.raygent}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
@@ -92,13 +94,14 @@ export default function ProjectsPage() {
           </div>
           <div className="mt-auto">
             <h2 className="font-headline mb-4 text-2xl font-bold tracking-tight md:text-3xl">
-              SYNTRA
+              CAMPUS CONNECT AI
             </h2>
             <p className="mb-8 text-neutral-500">
-              React Native health app — Node.js/Express on AWS, 500 concurrent users at 99.8% uptime. HealthKit via Sahha SDK; 10,000+ daily data points for readiness insights.
+              Served 1,000+ students at 92% query relevance — agentic search in Python/FastAPI with
+              vector embeddings and PostgreSQL. Cut latency 55%.
             </p>
             <a
-              href={PROJECT_LINKS.syntra}
+              href={PROJECT_LINKS.campusConnectAi}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
@@ -116,13 +119,14 @@ export default function ProjectsPage() {
           </div>
           <div className="relative z-10 mt-auto">
             <h2 className="font-headline mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-              TRADEX
+              C.Y.R.U.S.
             </h2>
             <p className="mb-8 max-w-sm text-neutral-500">
-              Portfolio optimizer — FastAPI backend, Next.js frontend, Black-Litterman and optimization. Backtested across 10+ market scenarios (NumPy, SciPy).
+              85ms end-to-end inference fusing voice and gesture ML via TensorFlow/Keras and MediaPipe
+              signal processing.
             </p>
             <a
-              href={PROJECT_LINKS.tradex}
+              href={PROJECT_LINKS.cyrus}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-tertiary-singularity"
@@ -138,19 +142,19 @@ export default function ProjectsPage() {
               Project 05
             </span>
             <h2 className="font-headline mb-6 text-4xl font-bold tracking-tighter md:text-5xl">
-              T-MOBILE ESCAPE MCCOMBS
+              SYNTRA
             </h2>
             <p className="mb-8 text-lg leading-relaxed text-neutral-400">
-              1st place out of 150+ teams — engineered an ML pipeline with vectorized NumPy solvers and Keras baselines for the McCombs School of Business hackathon (Nov 2025).
+              Node.js/Express REST APIs on AWS — 500 concurrent users at 99.8% uptime. HealthKit via
+              Sahha SDK processing 10,000+ daily data points for athlete readiness.
             </p>
             <a
-              href={PROJECT_LINKS.escapeMccombsHackathon}
+              href={PROJECT_LINKS.syntra}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white px-12 py-4 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
-              aria-label="Highlights — BAXA Escape McCombs Fall 2025 (LinkedIn)"
             >
-              Highlights
+              View
             </a>
           </div>
           <div className="relative h-64 w-full overflow-hidden bg-black md:w-1/2" />

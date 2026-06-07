@@ -3,11 +3,12 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { AboutMatrixShell } from "@/components/portfolio/about-matrix-shell";
+import { AboutExperienceSection } from "@/components/portfolio/about-experience-section";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Rayhan Mohammad — education, experience, and technical skills in software and machine learning.",
+    "Rayhan Mohammad — software engineer building multi-agent AI platforms, RAG pipelines, and production ML systems. UT Austin, GPA 4.0.",
 };
 
 /** Matches `public/about-portrait.png` pixel dimensions. */
@@ -17,15 +18,15 @@ const skills = [
   "Python",
   "TypeScript",
   "React",
-  "Next.js",
   "FastAPI",
+  "LangGraph",
   "TensorFlow",
+  "Node.js",
   "PostgreSQL",
-  "MongoDB",
-  "AWS",
   "Docker",
-  "REST APIs",
-  "Git & CI/CD",
+  "AWS",
+  "CI/CD",
+  "RAG",
 ];
 
 export default function AboutPage() {
@@ -45,9 +46,10 @@ export default function AboutPage() {
           </h1>
           <div className="max-w-2xl">
             <p className="text-xl font-light leading-relaxed text-neutral-200 md:text-2xl">
-              I&apos;m Rayhan — a Statistics &amp; Data Science and Computer Science student at UT Austin
-              (GPA 4.0). I ship full-stack products and ML systems: from agentic search and FastAPI
-              backends to production monitoring, evals, and research-grade pipelines in genomics.
+              I&apos;m Rayhan — B.S. Computer Science and Statistics &amp; Data Science at UT Austin
+              (GPA 4.0). I build production AI systems: multi-agent platforms at Humana and Krowe,
+              RAG pipelines at PGA, and ML research pipelines on TACC HPC — always with CI/CD, evals,
+              and measurable impact.
             </p>
           </div>
         </div>
@@ -83,17 +85,18 @@ export default function AboutPage() {
         </div>
         <div className="space-y-10 text-lg font-light text-on-surface-variant">
           <p>
-            I care about end-to-end ownership: clear APIs, reproducible workflows, and telemetry
-            so features don&apos;t just launch — they stay reliable. That mindset came from leading
-            engineering at a startup, shipping ML education at scale, and mentoring peers through
-            live workshops.
+            I care about end-to-end ownership: ship, instrument, iterate. That came from founding
+            Kairos at Krowe, deploying enterprise AI at Humana, and running statistical validation
+            pipelines in genomics research — clear APIs, reproducible workflows, and telemetry so
+            features stay reliable after launch.
           </p>
           <p>
             Recent focus:{" "}
             <span className="font-medium text-white">
-              agentic LLM features, retrieval and embeddings, and statistical validation in research
+              multi-agent orchestration (LangGraph, Vertex AI), RAG and embeddings, and statistical
+              validation at scale
             </span>
-            — always with an eye on latency, correctness, and real user impact.
+            — with latency and correctness as hard constraints.
           </p>
           <Link
             href="/projects"
@@ -121,63 +124,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="mx-auto mb-24 max-w-5xl md:mb-40">
-        <h2 className="font-headline mb-16 text-xs uppercase tracking-[0.3em] text-secondary-singularity">
-          Experience
-        </h2>
-        <div className="flex flex-col gap-4">
-          {[
-            {
-              years: "NOV 2025 — PRES.",
-              title: "UNDERGRADUATE RESEARCHER",
-              org: "UT Center for Computational Biology and Bioinformatics",
-              body: "Applied AI in Python to locate genes and mutation sites; built automated statistical validation pipelines and reproducible Git workflows (≈40% fewer data errors).",
-            },
-            {
-              years: "JUL 2025 — PRES.",
-              title: "ML / SOFTWARE (BAA + TEXAS CONVERGENT)",
-              org: "UT Austin",
-              body: "Teaching ML in Python via workshops; built React/Supabase member portal with analytics. Shipping a wearable biometric tracker with time-series models and REST APIs for convergent MVPs.",
-            },
-            {
-              years: "OCT 2024 — JUL 2025",
-              title: "MACHINE LEARNING EXTERN",
-              org: "The PGA of America",
-              body: "Delivered 12 Python ML labs with CI/CD and telemetry; adopted by 500+ learners. Standardized Docker tooling and unblocked 14 engineers ahead of schedule.",
-            },
-            {
-              years: "AUG 2023 — AUG 2025",
-              title: "CHIEF TECHNOLOGY OFFICER",
-              org: "Krowe Technologies",
-              body: "Shipped Kairos end-to-end (React/Next.js, FastAPI, AWS/Firestore) for 23 SMBs and 100+ founders. Shipped agentic LLM features with CI/CD, evals, and production monitoring.",
-            },
-            {
-              years: "DEC 2023 — JUL 2024",
-              title: "SOFTWARE ENGINEER INTERN",
-              org: "Nixar Solutions",
-              body: "Shipped React/Next.js customer features with API integrations. Drove 18% conversion lift via A/B tests; KPI dashboards improved user interactions 533%.",
-            },
-          ].map((row) => (
-            <div
-              key={row.title}
-              className="grid grid-cols-1 gap-4 rounded-lg bg-white/[0.02] px-4 py-12 transition-colors duration-500 hover:bg-white/[0.04] md:grid-cols-12"
-            >
-              <div className="font-label text-sm text-neutral-500 md:col-span-2">{row.years}</div>
-              <div className="md:col-span-6">
-                <h4 className="font-headline mb-2 text-xl font-bold text-white md:text-2xl">
-                  {row.title}
-                </h4>
-                <p className="font-label text-xs uppercase tracking-wide text-neutral-500">
-                  {row.org}
-                </p>
-              </div>
-              <div className="text-sm font-light leading-relaxed text-on-surface-variant md:col-span-4">
-                {row.body}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <AboutExperienceSection />
       </div>
 
       <section className="relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 overflow-x-clip bg-black/60 pb-[max(5rem,env(safe-area-inset-bottom))] pt-20 text-center backdrop-blur-md md:pb-[max(6rem,env(safe-area-inset-bottom))] md:pt-24">
@@ -190,7 +137,8 @@ export default function AboutPage() {
             LET&apos;S CONNECT.
           </h2>
           <p className="mx-auto mb-10 max-w-xl font-light text-neutral-300">
-            Open to internships, research, and product engineering roles — especially where ML meets production systems.
+            Open to software and ML engineering roles — especially multi-agent AI, full-stack product,
+            and data-intensive systems.
           </p>
           <Link
             href="mailto:rayhanm@utexas.edu"

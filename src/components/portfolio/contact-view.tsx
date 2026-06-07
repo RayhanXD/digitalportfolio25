@@ -51,8 +51,8 @@ export function ContactView() {
                 </h1>
               </div>
               <p className="max-w-sm text-base leading-relaxed text-neutral-400 lg:max-w-md lg:pb-2 lg:text-right lg:text-lg">
-                Internships, research, and product engineering — ML, full-stack systems, and data-heavy
-                apps. Drop a note; I read everything.
+                Software and ML engineering — multi-agent AI, full-stack product, and data-heavy systems.
+                Internships, research, and founding-engineer work. Drop a note; I read everything.
               </p>
             </div>
           </header>
