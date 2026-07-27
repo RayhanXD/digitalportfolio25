@@ -15,8 +15,8 @@ export function HomeBento() {
             Selected <span className="text-outline">projects</span>
           </h2>
           <p className="text-lg font-light leading-relaxed text-on-surface-variant">
-            Highlights from my stack — agentic search, health telemetry, multimodal ML, and quant
-            tooling — the same themes you&apos;ll see in experience and research.
+            Highlights from my stack — agentic tooling, multi-agent orchestration, campus-scale
+            search, and production ML — the same themes you&apos;ll see in experience and research.
           </p>
         </div>
         <div className="text-right">
@@ -24,7 +24,7 @@ export function HomeBento() {
             Graduation
           </p>
           <span className="font-headline text-3xl font-bold text-tertiary-singularity md:text-4xl">
-            May &apos;29
+            May &apos;28
           </span>
         </div>
       </div>
@@ -44,21 +44,22 @@ export function HomeBento() {
           </video>
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-10 [&_h3]:drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)] [&_p]:drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)] [&>span]:drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             <span className="font-label mb-3 text-xs uppercase tracking-widest text-secondary-singularity">
-              Campus Connect AI
+              SelfPI
             </span>
             <h3 className="font-headline mb-3 text-2xl font-bold text-white md:text-4xl">
-              AGENTIC SEARCH
+              AGENTIC API TOOL
             </h3>
             <p className="line-clamp-2 max-w-md text-on-surface-variant">
-              Full-stack platform for 1,000+ students — semantic models, PostgreSQL, FastAPI, and CI/CD.
+              Detects third-party breaking changes and opens PRs patching every affected call site —
+              FastAPI, React, AWS Fargate.
             </p>
           </div>
           <div className="absolute right-6 top-6 flex gap-2 md:right-10 md:top-10">
             <span className="rounded border border-white/10 bg-white/10 px-3 py-1 font-label text-[10px] uppercase text-white backdrop-blur-md">
-              NLP
+              Agents
             </span>
             <span className="rounded border border-white/10 bg-white/10 px-3 py-1 font-label text-[10px] uppercase text-white backdrop-blur-md">
-              FastAPI
+              AWS
             </span>
           </div>
         </div>
@@ -79,10 +80,10 @@ export function HomeBento() {
           </div>
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 [&_h3]:drop-shadow-[0_2px_20px_rgba(0,0,0,0.95)] [&>span]:drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             <span className="font-label mb-2 text-xs uppercase tracking-widest text-secondary-singularity">
-              C.Y.R.U.S.
+              Keystone
             </span>
             <h3 className="font-headline text-xl font-bold uppercase text-white md:text-2xl">
-              Voice + gesture ML
+              Best Overall · LangGraph
             </h3>
           </div>
         </div>

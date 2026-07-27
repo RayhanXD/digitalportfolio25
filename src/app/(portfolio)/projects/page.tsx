@@ -5,16 +5,16 @@ import { ProjectsWaveShell } from "@/components/portfolio/projects-wave-shell";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Selected projects — LangGraph multi-agent systems, agentic search, multimodal ML, and production health APIs.",
+    "Selected projects — SelfPI agentic API tooling, LangGraph multi-agent systems, campus-scale search, and multimodal ML.",
 };
 
 /** Live / repo URLs from resume (PDF link annotations) */
 const PROJECT_LINKS = {
-  keystone: "https://github.com/RayhanXD",
-  raygent: "https://github.com/RayhanXD",
-  campusConnectAi: "https://www.campusconnectai.org/",
+  selfpi: "https://github.com/RayhanXD/selfpi",
+  keystone: "https://github.com/RayhanXD/CSB-Hack-Day.git",
+  raygent: "https://github.com/RayhanXD/raygent",
+  campusConnectAi: "https://apps.apple.com/us/app/ccai-campus-connect-ai/id6757893694",
   cyrus: "https://github.com/RayhanXD/C.Y.R.U.S.",
-  syntra: "https://github.com/RayhanXD/Syntra",
 } as const;
 
 export default function ProjectsPage() {
@@ -30,8 +30,8 @@ export default function ProjectsPage() {
           </h1>
           <div className="mb-8 h-0.5 w-24 bg-secondary-singularity" />
           <p className="max-w-xl text-lg leading-relaxed text-neutral-300">
-            Multi-agent orchestration, agentic search at campus scale, multimodal ML, and production
-            health APIs — built for measurable impact.
+            Agentic tooling that patches breaking API changes, multi-agent orchestration, campus-scale
+            search, and multimodal ML — built for measurable impact.
           </p>
         </header>
 
@@ -44,14 +44,15 @@ export default function ProjectsPage() {
           </div>
           <div className="relative z-10 mt-auto">
             <h2 className="font-headline mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-              KEYSTONE
+              SELFPI
             </h2>
             <p className="mb-8 max-w-md text-neutral-500">
-              Won Best Overall at HBA×CSBA Hack Day — LangGraph/Gemini multi-agent real estate platform
-              built in 5 hours. Python, FastAPI, React, multi-agent orchestration.
+              Agentic tool that watches third-party OpenAPI specs, detects breaking changes, and
+              opens PRs patching every affected call site. Six-stage static analysis on AWS Fargate
+              + MongoDB Atlas — Python, FastAPI, React, Terraform.
             </p>
             <a
-              href={PROJECT_LINKS.keystone}
+              href={PROJECT_LINKS.selfpi}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"
@@ -65,6 +66,31 @@ export default function ProjectsPage() {
           <div className="absolute right-0 top-0 p-8">
             <span className="font-label text-[10px] uppercase tracking-[0.3em] text-secondary-singularity">
               Project 02
+            </span>
+          </div>
+          <div className="mt-auto">
+            <h2 className="font-headline mb-4 text-2xl font-bold tracking-tight md:text-3xl">
+              KEYSTONE
+            </h2>
+            <p className="mb-8 text-neutral-500">
+              Won Best Overall at HBA×CSBA Hack Day — LangGraph/Gemini multi-agent real estate
+              platform in 5 hours. Python, FastAPI, React.
+            </p>
+            <a
+              href={PROJECT_LINKS.keystone}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-label inline-block bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
+            >
+              View
+            </a>
+          </div>
+        </article>
+
+        <article className="glow-tertiary group relative flex min-h-[420px] flex-col justify-between bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-4">
+          <div className="absolute right-0 top-0 p-8">
+            <span className="font-label text-[10px] uppercase tracking-[0.3em] text-tertiary-singularity">
+              Project 03
             </span>
           </div>
           <div className="mt-auto">
@@ -86,31 +112,6 @@ export default function ProjectsPage() {
           </div>
         </article>
 
-        <article className="glow-tertiary group relative flex min-h-[420px] flex-col justify-between bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-4">
-          <div className="absolute right-0 top-0 p-8">
-            <span className="font-label text-[10px] uppercase tracking-[0.3em] text-tertiary-singularity">
-              Project 03
-            </span>
-          </div>
-          <div className="mt-auto">
-            <h2 className="font-headline mb-4 text-2xl font-bold tracking-tight md:text-3xl">
-              CAMPUS CONNECT AI
-            </h2>
-            <p className="mb-8 text-neutral-500">
-              Served 1,000+ students at 92% query relevance — agentic search in Python/FastAPI with
-              vector embeddings and PostgreSQL. Cut latency 55%.
-            </p>
-            <a
-              href={PROJECT_LINKS.campusConnectAi}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-label inline-block bg-white/10 px-8 py-3 text-sm font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black"
-            >
-              View
-            </a>
-          </div>
-        </article>
-
         <article className="glow-tertiary group relative flex min-h-[380px] flex-col justify-between overflow-hidden bg-black/75 p-8 backdrop-blur-md transition-all duration-500 md:col-span-8">
           <div className="absolute right-0 top-0 p-8">
             <span className="font-label text-[10px] uppercase tracking-[0.3em] text-tertiary-singularity">
@@ -119,14 +120,14 @@ export default function ProjectsPage() {
           </div>
           <div className="relative z-10 mt-auto">
             <h2 className="font-headline mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-              C.Y.R.U.S.
+              CAMPUS CONNECT AI
             </h2>
             <p className="mb-8 max-w-sm text-neutral-500">
-              85ms end-to-end inference fusing voice and gesture ML via TensorFlow/Keras and MediaPipe
-              signal processing.
+              Served 1,000+ students at 92% query relevance — agentic search in Python/FastAPI with
+              vector embeddings and PostgreSQL. Cut latency 55%.
             </p>
             <a
-              href={PROJECT_LINKS.cyrus}
+              href={PROJECT_LINKS.campusConnectAi}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white px-8 py-3 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-tertiary-singularity"
@@ -142,14 +143,14 @@ export default function ProjectsPage() {
               Project 05
             </span>
             <h2 className="font-headline mb-6 text-4xl font-bold tracking-tighter md:text-5xl">
-              SYNTRA
+              C.Y.R.U.S.
             </h2>
             <p className="mb-8 text-lg leading-relaxed text-neutral-400">
-              Node.js/Express REST APIs on AWS — 500 concurrent users at 99.8% uptime. HealthKit via
-              Sahha SDK processing 10,000+ daily data points for athlete readiness.
+              85ms end-to-end inference fusing voice and gesture ML via TensorFlow/Keras and MediaPipe
+              — hands-free UI control across media, IoT, and accessibility.
             </p>
             <a
-              href={PROJECT_LINKS.syntra}
+              href={PROJECT_LINKS.cyrus}
               target="_blank"
               rel="noopener noreferrer"
               className="font-label inline-block bg-white px-12 py-4 text-sm font-bold uppercase tracking-widest text-black transition-colors duration-300 hover:bg-secondary-singularity"

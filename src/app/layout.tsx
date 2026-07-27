@@ -19,11 +19,15 @@ export const metadata: Metadata = {
     template: "%s | Rayhan Mohammad",
   },
   description:
-    "Software engineer and ML builder — multi-agent AI platforms, RAG pipelines, and production systems. UT Austin Computer Science and Statistics & Data Science.",
+    "Software engineer and ML builder — agentic AI platforms, RAG pipelines, and production systems. UT Austin Computer Science and Statistics & Data Science.",
   icons: {
-    icon: "/galaxy.png",
-    shortcut: "/galaxy.png",
-    apple: "/galaxy.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

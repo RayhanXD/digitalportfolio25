@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Home",
   description:
-    "Rayhan Mohammad — full-stack and ML engineering. Agentic AI, production systems, and research at UT Austin.",
+    "Rayhan Mohammad — full-stack and ML engineering. Agentic AI tooling, multi-agent platforms, and research at UT Austin.",
 };
 
 export default function HomePage() {

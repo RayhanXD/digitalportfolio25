@@ -8,13 +8,16 @@ export function HomeCta() {
         LET&apos;S <span className="text-outline">BUILD</span>
       </h2>
       <p className="mx-auto mb-10 max-w-xl text-lg font-light italic text-on-surface-variant">
-        Open to internships, research collaborations, and teams shipping ML and full-stack product.
+        Open to internships, research, and teams shipping agentic AI, ML infrastructure, and
+        full-stack product.
       </p>
       <Link
         className="font-headline inline-block border-b-4 border-tertiary-singularity pb-2 text-2xl font-bold text-white transition-colors duration-300 hover:text-tertiary-singularity md:text-3xl"
-        href="mailto:rayhanm@utexas.edu"
+        href="mailto:rayriz.mohammad@gmail.com"
+        target="_blank"
+        rel="noopener noreferrer"
       >
-        RAYHANM@UTEXAS.EDU
+        RAYRIZ.MOHAMMAD@GMAIL.COM
       </Link>
       </div>
     </section>

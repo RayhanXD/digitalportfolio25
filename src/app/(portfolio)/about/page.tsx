@@ -8,7 +8,7 @@ import { AboutExperienceSection } from "@/components/portfolio/about-experience-
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Rayhan Mohammad — software engineer building multi-agent AI platforms, RAG pipelines, and production ML systems. UT Austin, GPA 4.0.",
+    "Rayhan Mohammad — software engineer shipping agentic AI platforms, RAG pipelines, and production ML systems. UT Austin, GPA 4.0.",
 };
 
 /** Matches `public/about-portrait.png` pixel dimensions. */
@@ -21,11 +21,13 @@ const skills = [
   "FastAPI",
   "LangGraph",
   "TensorFlow",
+  "Keras",
   "Node.js",
   "PostgreSQL",
+  "MongoDB",
   "Docker",
   "AWS",
-  "CI/CD",
+  "Azure DevOps",
   "RAG",
 ];
 
@@ -47,9 +49,9 @@ export default function AboutPage() {
           <div className="max-w-2xl">
             <p className="text-xl font-light leading-relaxed text-neutral-200 md:text-2xl">
               I&apos;m Rayhan — B.S. Computer Science and Statistics &amp; Data Science at UT Austin
-              (GPA 4.0). I build production AI systems: multi-agent platforms at Humana and Krowe,
-              RAG pipelines at PGA, and ML research pipelines on TACC HPC — always with CI/CD, evals,
-              and measurable impact.
+              (GPA 4.0, May 2028). I ship production AI: Vertex multi-agent platforms at Humana,
+              a $300K-backed agentic marketplace at Krowe, RAG systems at PGA, and genomic ML on
+              TACC HPC — always with CI/CD, evals, and measurable impact.
             </p>
           </div>
         </div>
@@ -85,16 +87,16 @@ export default function AboutPage() {
         </div>
         <div className="space-y-10 text-lg font-light text-on-surface-variant">
           <p>
-            I care about end-to-end ownership: ship, instrument, iterate. That came from founding
-            Kairos at Krowe, deploying enterprise AI at Humana, and running statistical validation
-            pipelines in genomics research — clear APIs, reproducible workflows, and telemetry so
-            features stay reliable after launch.
+            I care about end-to-end ownership: ship, instrument, iterate. That came from raising
+            $300K as founding engineer at Krowe, deploying enterprise AI across Humana L2 teams,
+            and running statistical validation pipelines in genomics research — clear APIs,
+            reproducible workflows, and telemetry so features stay reliable after launch.
           </p>
           <p>
             Recent focus:{" "}
             <span className="font-medium text-white">
-              multi-agent orchestration (LangGraph, Vertex AI), RAG and embeddings, and statistical
-              validation at scale
+              agentic tooling (SelfPI), multi-agent orchestration (LangGraph, Vertex AI), RAG and
+              embeddings, and statistical validation at scale
             </span>
             — with latency and correctness as hard constraints.
           </p>
@@ -137,11 +139,13 @@ export default function AboutPage() {
             LET&apos;S CONNECT.
           </h2>
           <p className="mx-auto mb-10 max-w-xl font-light text-neutral-300">
-            Open to software and ML engineering roles — especially multi-agent AI, full-stack product,
-            and data-intensive systems.
+            Open to software and ML engineering roles — especially agentic AI platforms, RAG
+            infrastructure, full-stack product, and data-intensive systems.
           </p>
           <Link
-            href="mailto:rayhanm@utexas.edu"
+            href="mailto:rayriz.mohammad@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-label inline-block bg-white px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] text-on-primary-fixed transition-all duration-300 hover:shadow-[0_0_30px_rgba(120,180,232,0.45)] active:scale-95"
           >
             Email me

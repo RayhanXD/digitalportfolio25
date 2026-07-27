@@ -30,7 +30,7 @@ const experiences: readonly AboutExperience[] = [
     years: "AUG 2023 — PRES.",
     title: "FOUNDING SOFTWARE ENGINEER",
     org: "Krowe Technologies",
-    body: "Shipped Kairos to 23 SMBs — multi-agent LLM platform end-to-end on React/Next.js, FastAPI, and AWS. Cut agent time-to-ship with CI/CD, eval cycles, and Supabase production monitoring.",
+    body: "Raised $300K and scaled Krowe to 23 startups — modular agentic AI platform and developer marketplace on React/Next.js and FastAPI. Enabling AI developers to sell custom agentic tools to SMB clients.",
   },
   {
     years: "NOV 2025 — PRES.",

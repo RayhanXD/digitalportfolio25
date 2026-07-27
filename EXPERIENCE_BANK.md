@@ -15,8 +15,8 @@
    - Drove 500+ engineer adoption by standardizing Docker tooling and clearing integration blockers 3 weeks early
 
 3. **Founding Software Engineer** | Krowe Technologies | Dallas, TX | Aug 2023 – Present
-   - Shipped Kairos to 23 SMBs by building multi-agent LLM platform end-to-end on React/Next.js, FastAPI, and AWS
-   - Cut agent time-to-ship for 23 SMBs by building CI/CD pipelines, eval cycles, and Supabase production monitoring
+   - Raised $300K and scaled Krowe to 23 startups by building modular agentic AI platform and developer marketplace
+   - Built React/Next.js and FastAPI marketplace enabling AI developers to sell custom agentic tools to SMB clients
 
 4. **Undergraduate Researcher** | UT Center for Computational Biology and Bioinformatics | Austin, TX | Nov 2025 – Present
    - Identified genomic mutation sites in time-series datasets by building Python ML pipeline on TACC HPC clusters
@@ -31,23 +31,27 @@
 ## PROJECTS
 *Ranked: most impactful first*
 
-1. **Keystone** | Python, LangGraph, Gemini API, React, FastAPI, Multi-Agent Orchestration | Feb 2026
+1. **SelfPI** | Python, FastAPI, React, TypeScript, MongoDB, AWS, Terraform | July 2026
+   - Built an agentic API tool that detects third-party breaking changes and opens PRs patching affected call sites
+   - Engineered a six-stage static analysis pipeline and FastAPI/React app on AWS Fargate + MongoDB Atlas
+
+2. **Keystone** | Python, LangGraph, Gemini API, React, FastAPI, Multi-Agent Orchestration | Feb 2026
    - Won Best Overall at HBA×CSBA Hack Day by building LangGraph/Gemini multi-agent real estate platform in 5 hours
 
-2. **Raygent** | Next.js, React, TypeScript, LangGraph, NVIDIA Nemotron, Python | Feb 2026
+3. **Raygent** | Next.js, React, TypeScript, LangGraph, NVIDIA Nemotron, Python | Feb 2026
    - Enabled real-time multi-agent inspection by building LangGraph visualizer on React/Next.js with NVIDIA Nemotron
 
-3. **Campus Connect AI** | Python, FastAPI, NLP, Vector Embeddings, PostgreSQL, React, CI/CD | Jul 2025
+4. **Campus Connect AI** | Python, FastAPI, NLP, Vector Embeddings, PostgreSQL, React, CI/CD | Jul 2025
    - Served 1,000+ students at 92% query relevance by building agentic search in Python/FastAPI; cut latency 55%
 
-4. **C.Y.R.U.S.** | Python, TensorFlow, Keras, MediaPipe, Signal Processing | May 2025
+5. **C.Y.R.U.S.** | Python, TensorFlow, Keras, MediaPipe, Signal Processing | May 2025
    - Achieved 85ms end-to-end inference by fusing voice and gesture ML inputs via TensorFlow/Keras and MediaPipe
 
-5. **Syntra** | React Native, Node.js, Express, MongoDB, HealthKit, AWS | Dec 2025
+6. **Syntra** | React Native, Node.js, Express, MongoDB, HealthKit, AWS | Dec 2025
    - Engineered Node.js/Express REST APIs on AWS handling 500 concurrent users at 99.8% uptime
    - Integrated HealthKit via Sahha SDK processing 10,000+ daily data points for real-time athlete readiness insights
 
-6. **TradeX** | Python, NumPy, SciPy, FastAPI, Next.js, Black-Litterman, Portfolio Optimization | Mar 2025
+7. **TradeX** | Python, NumPy, SciPy, FastAPI, Next.js, Black-Litterman, Portfolio Optimization | Mar 2025
    - Implemented Black-Litterman portfolio optimizer translating market views into optimal positions with risk constraints
    - Built full-stack app with Next.js frontend and FastAPI backend, backtested across 10+ market scenarios
 
@@ -88,7 +92,8 @@ B.S. Computer Science; B.S. Statistics & Data Science | GPA: 4.0 | May 2028
 
 | Role Type | Lead Experience | Swap In | Swap Out |
 |---|---|---|---|
-| General SWE | Humana → PGA → Krowe → CCBB | Keystone, Raygent, CCA, CYRUS | Nixar (if space) |
-| ML / AI Engineer | PGA → Humana → Krowe → CCBB | CYRUS, CCA, Raygent | Keystone |
-| Quant / Finance SWE | Humana → Krowe → Nixar → CCBB | TradeX, CCA | Raygent, CYRUS |
-| Product / Fullstack | Krowe → Humana → Nixar → PGA | Syntra, CCA, TradeX | CYRUS |
+| General SWE | Humana → PGA → Krowe → CCBB | SelfPI, Keystone, CCA | Raygent, CYRUS, Nixar (if space) |
+| ML / AI Engineer | PGA → Humana → Krowe → CCBB | CYRUS, CCA, Raygent | Keystone, SelfPI |
+| Systems / Infra / Dev Tools | Humana → PGA → Krowe → CCBB | SelfPI, Keystone, CCA | CYRUS, Raygent |
+| Quant / Finance SWE | Humana → Krowe → Nixar → CCBB | TradeX, SelfPI, CCA | Raygent, CYRUS |
+| Product / Fullstack | Krowe → Humana → Nixar → PGA | Syntra, SelfPI, CCA, TradeX | CYRUS |

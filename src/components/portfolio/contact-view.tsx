@@ -1,14 +1,17 @@
 "use client";
 
+import type { FormEvent } from "react";
 import { ExternalLink, Globe, Mail, Phone } from "lucide-react";
 import { ShaderAnimation } from "@/components/ui/shader-lines";
 import { cn } from "@/lib/utils";
 
+const CONTACT_EMAIL = "rayriz.mohammad@gmail.com";
+
 const channels = [
   {
     label: "Email",
-    value: "rayhanm@utexas.edu",
-    href: "mailto:rayhanm@utexas.edu",
+    value: CONTACT_EMAIL,
+    href: `mailto:${CONTACT_EMAIL}`,
     icon: Mail,
     primary: true,
   },
@@ -21,8 +24,27 @@ const channels = [
   },
 ] as const;
 
+function openMailtoFromForm(event: FormEvent<HTMLFormElement>) {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  const name = String(data.get("name") ?? "").trim();
+  const email = String(data.get("email") ?? "").trim();
+  const message = String(data.get("message") ?? "").trim();
+
+  const subject = name ? `Portfolio message from ${name}` : "Portfolio message";
+  const bodyLines = [
+    message || "(No message provided)",
+    "",
+    "—",
+    name ? `Name: ${name}` : null,
+    email ? `Email: ${email}` : null,
+  ].filter((line): line is string => line !== null);
+
+  const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+  window.open(mailto, "_blank", "noopener,noreferrer");
+}
+
 const online = [
-  { label: "Site", href: "https://rayhanm.com", icon: Globe },
   { label: "GitHub", href: "https://github.com/RayhanXD", icon: ExternalLink },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/rayhan-mohammad1", icon: ExternalLink },
 ] as const;
@@ -51,8 +73,9 @@ export function ContactView() {
                 </h1>
               </div>
               <p className="max-w-sm text-base leading-relaxed text-neutral-400 lg:max-w-md lg:pb-2 lg:text-right lg:text-lg">
-                Software and ML engineering — multi-agent AI, full-stack product, and data-heavy systems.
-                Internships, research, and founding-engineer work. Drop a note; I read everything.
+                Software and ML engineering — agentic AI platforms, RAG infrastructure, and
+                full-stack product. Internships, research, and founding-engineer work. Drop a note;
+                I read everything.
               </p>
             </div>
           </header>
@@ -65,6 +88,9 @@ export function ContactView() {
                   <a
                     key={ch.href}
                     href={ch.href}
+                    {...(ch.href.startsWith("mailto:")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     className={cn(
                       "group relative overflow-hidden rounded-2xl border p-6 transition-all duration-500 ease-out",
                       ch.primary
@@ -126,13 +152,16 @@ export function ContactView() {
                   <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(120,180,232,0.06)_0%,transparent_45%,rgba(255,181,153,0.04)_100%)]" />
                   <div className="pointer-events-none absolute -right-20 -top-20 size-64 rounded-full bg-secondary-singularity/10 blur-3xl" />
 
-                  <form action="#" className="relative z-10 flex flex-col gap-7 p-8 md:gap-8 md:p-10 lg:p-12">
+                  <form
+                    onSubmit={openMailtoFromForm}
+                    className="relative z-10 flex flex-col gap-7 p-8 md:gap-8 md:p-10 lg:p-12"
+                  >
                     <div className="flex flex-col gap-2 border-b border-white/10 pb-6 md:flex-row md:items-end md:justify-between">
                       <h2 className="font-headline text-2xl font-bold tracking-tight text-white md:text-3xl">
                         Message
                       </h2>
                       <span className="font-label text-[10px] uppercase tracking-[0.25em] text-neutral-500">
-                        Encrypted in transit · no spam, please
+                        Opens your email app · no spam, please
                       </span>
                     </div>
 

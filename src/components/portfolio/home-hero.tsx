@@ -8,7 +8,7 @@ export function HomeHero() {
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
       <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-5 text-center sm:px-6 md:px-8 lg:px-10">
         <span className="font-label mb-6 block text-sm uppercase tracking-[0.4em] text-secondary-singularity">
-          Full-stack · ML · Agentic AI
+          Agentic AI · Full-stack · ML
         </span>
         <h1 className="font-headline text-[clamp(4rem,15vw,12rem)] font-black leading-[0.8] tracking-tighter text-white">
           RAYHAN MOHAMMAD

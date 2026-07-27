@@ -10,15 +10,23 @@ export function HomeStats() {
           </h4>
           <p className="font-headline mb-12 text-3xl font-light leading-tight text-white md:text-4xl lg:text-5xl">
             &ldquo;SHIP END-TO-END — FROM{" "}
-            <span className="font-black italic">EMBEDDINGS</span> AND APIs TO METRICS USERS TRUST.&rdquo;
+            <span className="font-black italic">MULTI-AGENT</span> SYSTEMS TO METRICS TEAMS TRUST.&rdquo;
           </p>
           <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-10 md:gap-8 md:pt-12">
             <div>
               <span className="font-headline block text-xl font-bold text-white md:text-2xl">
-                4.0
+                $300K
               </span>
               <span className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
-                GPA
+                Raised (Krowe)
+              </span>
+            </div>
+            <div>
+              <span className="font-headline block text-xl font-bold text-white md:text-2xl">
+                72%
+              </span>
+              <span className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
+                Faster certs (Humana)
               </span>
             </div>
             <div>
@@ -26,15 +34,7 @@ export function HomeStats() {
                 500+
               </span>
               <span className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
-                ML learners (PGA)
-              </span>
-            </div>
-            <div>
-              <span className="font-headline block text-xl font-bold text-white md:text-2xl">
-                100+
-              </span>
-              <span className="font-label text-[10px] uppercase tracking-widest text-neutral-500">
-                Kairos founders
+                Engineers (PGA)
               </span>
             </div>
           </div>
