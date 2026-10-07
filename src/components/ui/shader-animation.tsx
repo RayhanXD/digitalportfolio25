@@ -1,14 +1,21 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { type RefObject, useEffect, useRef } from "react"
 import * as THREE from "three"
 import { cn } from "@/lib/utils"
 
 type ShaderAnimationProps = {
   className?: string
+  /** Multiplier on how fast the rings travel outward, read every frame (1 = default) */
+  speedRef?: RefObject<number>
+  /**
+   * How far a ring travels per cycle, in half-viewport units. The default (5) spends most of each
+   * cycle off-screen (dark); ~2 keeps rings sweeping through the visible area continuously.
+   */
+  ringScale?: number
 }
 
-export function ShaderAnimation({ className }: ShaderAnimationProps) {
+export function ShaderAnimation({ className, speedRef, ringScale = 5 }: ShaderAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<{
     camera: THREE.Camera
@@ -41,6 +48,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
       precision highp float;
       uniform vec2 resolution;
       uniform float time;
+      uniform float ringScale;
 
       void main(void) {
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
@@ -50,7 +58,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
         vec3 color = vec3(0.0);
         for(int j = 0; j < 3; j++){
           for(int i=0; i < 5; i++){
-            color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));
+            color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*ringScale - length(uv) + mod(uv.x+uv.y, 0.2));
           }
         }
         
@@ -68,6 +76,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
     const uniforms = {
       time: { type: "f", value: 1.0 },
       resolution: { type: "v2", value: new THREE.Vector2() },
+      ringScale: { type: "f", value: ringScale },
     }
 
     const material = new THREE.ShaderMaterial({
@@ -100,7 +109,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
     // Animation loop
     const animate = () => {
       const animationId = requestAnimationFrame(animate)
-      uniforms.time.value += 0.05
+      uniforms.time.value += 0.05 * (speedRef?.current ?? 1)
       renderer.render(scene, camera)
 
       if (sceneRef.current) {
@@ -136,7 +145,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
         material.dispose()
       }
     }
-  }, [])
+  }, [speedRef, ringScale])
 
   return (
     <div

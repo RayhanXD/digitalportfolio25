@@ -7,52 +7,50 @@ import { cn } from "@/lib/utils";
 
 const PRELOADER_WELCOME_WORD = "Welcome,";
 const PRELOADER_HEADLINE_REST = " to The Horizon";
-/** Stagger for “Welcome,” only (intro + matching gaps in outro) */
-const WELCOME_CHAR_STAGGER_MS = 100;
-/** Stagger for “ to The Horizon” — unchanged from previous single speed */
-const CHAR_STAGGER_MS = 35;
-/** Must match `.preloader-char` animation duration in globals.css */
+/** When the headline starts revealing, ms from mount */
+const HEADLINE_START_MS = 250;
+/** Stagger for “Welcome,” only */
+const WELCOME_CHAR_STAGGER_MS = 65;
+/** Stagger for “ to The Horizon” */
+const CHAR_STAGGER_MS = 24;
+/** Must match `.preloader-char-in` animation duration in globals.css */
 const CHAR_DURATION_MS = 420;
 /** Pause after the last letter of “Welcome” finishes its reveal */
-const PAUSE_AFTER_WELCOME_MS = 350;
-/** When the headline outro (reverse stagger) starts, ms from page load */
-const OUTRO_START_MS = 7500;
+const PAUSE_AFTER_WELCOME_MS = 140;
+/** When the headline collapses into the horizon line, ms from mount */
+const OUTRO_START_MS = 2550;
+/** Outro stagger: letters collapse from both edges inward, meeting at the center */
+const OUTRO_STAGGER_MS = 20;
+/** Must match `.preloader-char-out` animation duration in globals.css */
+const OUTRO_CHAR_DURATION_MS = 520;
 
 const PRELOADER_HEADLINE_CHAR_COUNT =
   PRELOADER_WELCOME_WORD.length + PRELOADER_HEADLINE_REST.length;
 
-const PRELOADER_WELCOME_LEN = PRELOADER_WELCOME_WORD.length;
+const PRELOADER_CENTER_INDEX = (PRELOADER_HEADLINE_CHAR_COUNT - 1) / 2;
+const PRELOADER_MAX_CENTER_DISTANCE = Math.ceil(PRELOADER_CENTER_INDEX);
 
-/** Stagger between char at `leftIndex` and `leftIndex + 1` (outro builds backward from the end). */
-function preloaderStaggerBetweenCharsMs(leftIndex: number): number {
-  if (leftIndex < PRELOADER_WELCOME_LEN - 1) return WELCOME_CHAR_STAGGER_MS;
-  return CHAR_STAGGER_MS;
-}
-
-/** Outro start delay for the character at `globalIndex` (0 = first char of full headline). */
+/** Outro delay for the character at `globalIndex`: edges go first, the center last. */
 function preloaderOutroDelayMs(globalIndex: number): number {
-  const n = PRELOADER_HEADLINE_CHAR_COUNT;
-  let sum = 0;
-  for (let j = globalIndex; j < n - 1; j++) {
-    sum += preloaderStaggerBetweenCharsMs(j);
-  }
-  return sum;
+  const distance = Math.ceil(Math.abs(globalIndex - PRELOADER_CENTER_INDEX));
+  return (PRELOADER_MAX_CENTER_DISTANCE - distance) * OUTRO_STAGGER_MS;
 }
 
-/** Wall time for full outro: first char’s outro delay + char duration */
-const OUTRO_SEQUENCE_MS = preloaderOutroDelayMs(0) + CHAR_DURATION_MS;
+/** Wall time for full outro: the center char’s delay + its collapse */
+const OUTRO_SEQUENCE_MS =
+  PRELOADER_MAX_CENTER_DISTANCE * OUTRO_STAGGER_MS + OUTRO_CHAR_DURATION_MS;
 
-/** Overlay exit fade — keep in sync with root `duration-[1000ms]` below */
-const EXIT_FADE_MS = 1000;
+/** Overlay exit fade — keep in sync with root `duration-[900ms]` below */
+const EXIT_FADE_MS = 900;
 
 /** When the last character’s outro finishes (absolute time from page load) */
 const TEXT_OUTRO_END_MS = OUTRO_START_MS + OUTRO_SEQUENCE_MS;
 
 /**
- * Fire `dismiss` this many ms before the text outro ends so that `phase === "done"`
- * (preloader fully gone) happens on the same frame as the last letter finishing.
+ * Start exiting while the last letters are still collapsing, so the hero's horizon line
+ * ignites underneath the fading overlay exactly where the headline disappears.
  */
-const AUTO_DISMISS_MS = Math.max(0, TEXT_OUTRO_END_MS - EXIT_FADE_MS);
+const AUTO_DISMISS_MS = OUTRO_START_MS + 380;
 
 /**
  * Wall-clock deadline for auto-dismiss (performance.now()) across remounts.
@@ -67,6 +65,7 @@ function preloaderRestCharBaseDelayMs(): number {
   const lastWelcomeIndex = PRELOADER_WELCOME_WORD.length - 1;
   const welcomeCompleteMs =
     lastWelcomeIndex * WELCOME_CHAR_STAGGER_MS + CHAR_DURATION_MS;
+  // Relative to the headline mounting (HEADLINE_START_MS), not to page load
   return welcomeCompleteMs + PAUSE_AFTER_WELCOME_MS;
 }
 
@@ -96,7 +95,7 @@ export function PagePreloader({
       0,
       preloaderAutoDismissDeadlineMs - performance.now()
     );
-    const tWelcome = window.setTimeout(() => setCtaVisible(true), 2000);
+    const tWelcome = window.setTimeout(() => setCtaVisible(true), HEADLINE_START_MS);
     const tOutro = window.setTimeout(() => setOutroActive(true), OUTRO_START_MS);
     const tDismiss = window.setTimeout(() => dismiss(), dismissInMs);
     return () => {
@@ -136,7 +135,7 @@ export function PagePreloader({
     <>
       <div
         className={cn(
-          "fixed inset-0 z-[100] flex flex-col bg-black transition-opacity duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:duration-300 motion-reduce:ease-out",
+          "fixed inset-0 z-[100] flex flex-col bg-black transition-opacity duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:duration-300 motion-reduce:ease-out",
           phase === "exit"
             ? "pointer-events-none opacity-0"
             : "opacity-100"

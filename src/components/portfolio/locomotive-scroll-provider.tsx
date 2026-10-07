@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type LocomotiveScroll from "locomotive-scroll";
+import { gsap, ScrollTrigger } from "@/lib/motion";
 
 const LocomotiveScrollContext = createContext<LocomotiveScroll | null>(null);
 
@@ -33,12 +34,17 @@ export function LocomotiveScrollProvider({
       const { default: LocomotiveScroll } = await import("locomotive-scroll");
       if (cancelled) return;
 
+      // Drive Lenis from GSAP's ticker so smooth scroll and ScrollTrigger share one frame loop
       scroll = new LocomotiveScroll({
         lenisOptions: {
           lerp: 0.1,
           smoothWheel: true,
         },
+        scrollCallback: () => ScrollTrigger.update(),
+        initCustomTicker: (render) => gsap.ticker.add(render),
+        destroyCustomTicker: (render) => gsap.ticker.remove(render),
       });
+      gsap.ticker.lagSmoothing(0);
       if (cancelled) {
         scroll.destroy();
         return;
@@ -68,6 +74,7 @@ export function LocomotiveScrollProvider({
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         scrollRef.current?.resize();
+        ScrollTrigger.refresh();
       });
     });
     return () => cancelAnimationFrame(id);

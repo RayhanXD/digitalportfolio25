@@ -1,6 +1,7 @@
 import { HomeHero } from "@/components/portfolio/home-hero";
 import { HomeBento } from "@/components/portfolio/home-bento";
 import { HomeStats } from "@/components/portfolio/home-stats";
+import { KineticMarquee } from "@/components/portfolio/kinetic-marquee";
 import { HomeCta } from "@/components/portfolio/home-cta";
 import { HomePageBackground } from "@/components/portfolio/home-page-background";
 import type { Metadata } from "next";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <div className="relative z-10">
         <HomeHero />
         <HomeBento />
+        <KineticMarquee />
         <HomeStats />
         <HomeCta />
       </div>

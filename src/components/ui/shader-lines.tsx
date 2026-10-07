@@ -1,14 +1,58 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { type Ref, useEffect, useImperativeHandle, useRef } from "react";
 import * as THREE from "three";
+
+/** Imperative controls so a page can steer the signal. All changes ease in over a few frames. */
+export type ShaderLinesHandle = {
+  /** Move the rings' origin, in CSS px relative to the canvas container's top-left */
+  setCenter: (x: number, y: number) => void;
+  /** Return the origin to the middle of the container */
+  resetCenter: () => void;
+  /** Throw the rings outward faster for a moment (adds up; decays on its own) */
+  pulse: (amount: number) => void;
+  /** Brightness multiplier (1 = default) */
+  setGain: (gain: number) => void;
+  /** Colour multiplier per channel (1,1,1 = default) */
+  setTint: (r: number, g: number, b: number) => void;
+};
 
 type ShaderAnimationProps = {
   className?: string;
+  ref?: Ref<ShaderLinesHandle>;
 };
 
-export function ShaderAnimation({ className }: ShaderAnimationProps) {
+export function ShaderAnimation({ className, ref }: ShaderAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  // Targets written by the handle; the render loop eases the live uniforms toward them
+  const targets = useRef({
+    center: null as { x: number; y: number } | null,
+    boost: 0,
+    gain: 1,
+    tint: [1, 1, 1] as [number, number, number],
+  });
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setCenter: (x, y) => {
+        targets.current.center = { x, y };
+      },
+      resetCenter: () => {
+        targets.current.center = null;
+      },
+      pulse: (amount) => {
+        targets.current.boost = Math.min(targets.current.boost + amount, 40);
+      },
+      setGain: (gain) => {
+        targets.current.gain = gain;
+      },
+      setTint: (r, g, b) => {
+        targets.current.tint = [r, g, b];
+      },
+    }),
+    []
+  );
 
   useEffect(() => {
     const container = containerRef.current;
@@ -23,6 +67,9 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
     const uniforms = {
       time: { value: 1.0 },
       resolution: { value: new THREE.Vector2() },
+      center: { value: new THREE.Vector2() },
+      gain: { value: 1.0 },
+      tint: { value: new THREE.Vector3(1, 1, 1) },
     };
 
     const vertexShader = `
@@ -37,7 +84,10 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
 
       precision highp float;
       uniform vec2 resolution;
+      uniform vec2 center;
       uniform float time;
+      uniform float gain;
+      uniform vec3 tint;
 
       float random (in float x) {
           return fract(sin(x)*1e4);
@@ -49,7 +99,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
       }
 
       void main(void) {
-        vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
+        vec2 uv = ((gl_FragCoord.xy - center) * 2.0) / min(resolution.x, resolution.y);
 
         vec2 fMosaicScal = vec2(4.0, 2.0);
         vec2 vScreenSize = vec2(256,256);
@@ -66,7 +116,7 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
           }
         }
 
-        gl_FragColor = vec4(color[2],color[1],color[0],1.0);
+        gl_FragColor = vec4(vec3(color[2],color[1],color[0]) * tint * gain, 1.0);
       }
     `;
 
@@ -88,13 +138,18 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
     container.appendChild(canvas);
 
     let animationId = 0;
+    let cssHeight = 1;
 
     const setSize = () => {
       const rect = container.getBoundingClientRect();
       const w = Math.max(1, Math.floor(rect.width));
       const h = Math.max(1, Math.floor(rect.height));
+      cssHeight = h;
       renderer.setSize(w, h, false);
       uniforms.resolution.value.set(renderer.domElement.width, renderer.domElement.height);
+      if (!targets.current.center) {
+        uniforms.center.value.set(renderer.domElement.width / 2, renderer.domElement.height / 2);
+      }
     };
 
     setSize();
@@ -105,7 +160,24 @@ export function ShaderAnimation({ className }: ShaderAnimationProps) {
 
     const animate = () => {
       animationId = requestAnimationFrame(animate);
-      uniforms.time.value += 0.05;
+      const t = targets.current;
+      const dpr = renderer.getPixelRatio();
+      const res = uniforms.resolution.value;
+
+      // Ease the origin toward its target (gl_FragCoord is bottom-up, in device px)
+      const cx = t.center ? t.center.x * dpr : res.x / 2;
+      const cy = t.center ? (cssHeight - t.center.y) * dpr : res.y / 2;
+      uniforms.center.value.x += (cx - uniforms.center.value.x) * 0.08;
+      uniforms.center.value.y += (cy - uniforms.center.value.y) * 0.08;
+
+      uniforms.gain.value += (t.gain - uniforms.gain.value) * 0.08;
+      const tint = uniforms.tint.value;
+      tint.x += (t.tint[0] - tint.x) * 0.06;
+      tint.y += (t.tint[1] - tint.y) * 0.06;
+      tint.z += (t.tint[2] - tint.z) * 0.06;
+
+      t.boost *= 0.92;
+      uniforms.time.value += 0.05 * (1 + t.boost);
       renderer.render(scene, camera);
     };
     animate();

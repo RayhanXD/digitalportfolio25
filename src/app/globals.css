@@ -64,6 +64,8 @@
   --color-on-primary-fixed: #1a1c1c;
   --color-on-secondary-singularity: #0c1a28;
   --color-outline-variant: #4a4455;
+  /* Near-black page surface for chaptered pages (About); knockouts multiply against it */
+  --color-void: #030304;
   --font-family-headline: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-family-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-family-label: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
@@ -237,19 +239,24 @@
     animation: preloader-char-reveal 420ms ease forwards;
   }
 
+  /* Outro: each letter flattens into the horizon line (edges first, center last) */
   @keyframes preloader-char-out {
-    from {
+    0% {
       opacity: 1;
-      transform: translateY(0);
+      transform: scale(1, 1);
     }
-    to {
+    65% {
+      opacity: 1;
+    }
+    100% {
       opacity: 0;
-      transform: translateY(-0.4em);
+      transform: scale(1.6, 0.02);
     }
   }
 
   .preloader-char-out {
-    animation: preloader-char-out 420ms ease forwards;
+    transform-origin: 50% 55%;
+    animation: preloader-char-out 520ms cubic-bezier(0.7, 0, 0.84, 0) forwards;
   }
 
   /*
@@ -325,7 +332,260 @@
     max-width: none;
   }
 
+  /* ── Horizon line: anamorphic light streak (blue → white → orange) ── */
+  .horizon-line {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(120, 180, 232, 0.5) 22%,
+      rgba(255, 255, 255, 0.95) 50%,
+      rgba(255, 181, 153, 0.5) 78%,
+      transparent 100%
+    );
+  }
+
+  .horizon-line::before {
+    content: "";
+    position: absolute;
+    inset: -3px 8%;
+    background: inherit;
+    filter: blur(6px);
+    opacity: 0.8;
+  }
+
+  .horizon-flare {
+    width: min(36rem, 70vw);
+    height: 5rem;
+    background: radial-gradient(
+      ellipse 50% 50% at center,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(120, 180, 232, 0.16) 38%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  /*
+   * ── Knockout: a near-black layer whose white content becomes a window onto whatever is
+   * painted beneath (the About shader). Nothing between it and the shader may create a
+   * stacking context (z-index, opacity < 1, transform, filter) or the blend gets isolated.
+   */
+  .knockout {
+    background-color: var(--color-void);
+    mix-blend-mode: multiply;
+  }
+
+  /* ── Outline words that fill solid on scroll (see scrubTextFill) ── */
+  .text-outline-fill {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    color: transparent;
+    background-image: linear-gradient(90deg, #fff 46%, transparent 54%);
+    background-size: 220% 100%;
+    background-position: 100% 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  /* ── Cursor spotlight (position fed by useSpotlight) ── */
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      520px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(120, 180, 232, 0.13),
+      transparent 42%
+    );
+    mix-blend-mode: screen;
+    transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .spotlight:hover::after {
+    opacity: 1;
+  }
+
+  /* ── Scroll cue: a point of light travelling down a hairline ── */
+  @keyframes scroll-cue-travel {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(250%);
+    }
+  }
+
+  .scroll-cue-dot {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 40%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.85));
+    animation: scroll-cue-travel 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+
+  /* ── Generated project poster: a tilted planet edge lit in the project's accent ── */
+  .poster {
+    background:
+      radial-gradient(90% 70% at 50% 100%, rgb(var(--accent-rgb) / 0.14), transparent 65%),
+      #06070a;
+  }
+
+  .poster-stars {
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(255, 255, 255, 0.7), transparent 60%),
+      radial-gradient(1px 1px at 34% 8%, rgba(255, 255, 255, 0.5), transparent 60%),
+      radial-gradient(1.5px 1.5px at 58% 22%, rgba(255, 255, 255, 0.8), transparent 60%),
+      radial-gradient(1px 1px at 76% 12%, rgba(255, 255, 255, 0.45), transparent 60%),
+      radial-gradient(1px 1px at 88% 30%, rgba(255, 255, 255, 0.6), transparent 60%),
+      radial-gradient(1px 1px at 22% 38%, rgba(255, 255, 255, 0.35), transparent 60%),
+      radial-gradient(1.5px 1.5px at 46% 34%, rgba(255, 255, 255, 0.55), transparent 60%),
+      radial-gradient(1px 1px at 68% 42%, rgba(255, 255, 255, 0.4), transparent 60%),
+      radial-gradient(1px 1px at 6% 52%, rgba(255, 255, 255, 0.3), transparent 60%),
+      radial-gradient(1px 1px at 94% 6%, rgba(255, 255, 255, 0.5), transparent 60%);
+  }
+
+  /* Slow orbital drift so the scene breathes even when nothing is scrolling */
+  @keyframes poster-drift {
+    from {
+      rotate: -1.2deg;
+      scale: 1;
+    }
+    to {
+      rotate: 1.2deg;
+      scale: 1.04;
+    }
+  }
+
+  .poster-scene {
+    transform: rotate(var(--tilt, 0deg));
+    transform-origin: 50% 70%;
+    animation: poster-drift 14s ease-in-out infinite alternate;
+  }
+
+  [data-poster-inner] {
+    transition: scale 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .spotlight:hover [data-poster-inner] {
+    scale: 1.05;
+  }
+
+  .poster-planet {
+    position: absolute;
+    left: 50%;
+    top: var(--planet-top, 60%);
+    width: var(--planet-size, 180%);
+    aspect-ratio: 1;
+    translate: -50% 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 0%, #10131a 0%, #040406 38%, #020203 70%);
+    box-shadow:
+      0 -1px 0 0 rgb(var(--accent-rgb) / 1),
+      0 -12px 36px -4px rgb(var(--accent-rgb) / 0.7),
+      0 -60px 160px -10px rgb(var(--accent-rgb) / 0.4),
+      inset 0 16px 48px -12px rgb(var(--accent-rgb) / 0.55);
+  }
+
+  @keyframes poster-sun-breathe {
+    0%,
+    100% {
+      opacity: 0.85;
+      transform: translate(-50%, -50%) scale(1, 1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.15, 1.05);
+    }
+  }
+
+  .poster-sun {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 48%;
+    height: 11%;
+    background: radial-gradient(
+      ellipse 50% 50% at center,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0.6) 10%,
+      rgb(var(--accent-rgb) / 0.55) 30%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+    animation: poster-sun-breathe 6s ease-in-out infinite;
+  }
+
+  /* Contact channels: a sine wave scrolling sideways, like a tuned frequency */
+  @keyframes waveform-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-30px);
+    }
+  }
+
+  .waveform-scroll {
+    animation: waveform-scroll 0.9s linear infinite;
+  }
+
+  /* Experience counter: the focused role's number rolls up into place */
+  @keyframes exp-roll-in {
+    from {
+      opacity: 0;
+      transform: translateY(70%);
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+
+  .exp-roll {
+    animation: exp-roll-in 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .exp-roll-delayed {
+    animation-delay: 90ms;
+  }
+
+  @media (hover: none) {
+    .spotlight::after {
+      display: none;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .poster-sun {
+      animation: none;
+      transform: translate(-50%, -50%);
+    }
+
+    .poster-scene {
+      animation: none;
+    }
+
+    .exp-roll {
+      animation: none;
+    }
+
+    .waveform-scroll {
+      animation: none;
+    }
+
+    .scroll-cue-dot {
+      animation: none;
+      transform: translateY(75%);
+    }
+
     .preloader-cta-reveal {
       animation: none;
       opacity: 1;
