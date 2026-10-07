@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { MQ, revealOnScroll, useGsap } from "@/lib/motion";
+import { gsap, MQ, revealOnScroll, useGsap } from "@/lib/motion";
 import { Magnetic } from "@/components/motion/magnetic";
 import { ChapterBand, chapterInner } from "@/components/portfolio/chapter-band";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,16 @@ export function AboutCta() {
     (mm) => {
       mm.add(MQ.motion, () => {
         revealOnScroll(["[data-cta-copy]", "[data-cta-action]"], root.current!, { stagger: 0.12 });
+
+        // The homepage's horizon closes this page too: it draws out under the title, then its
+        // light comes up, finishing exactly as the page runs out
+        gsap
+          .timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: { trigger: root.current, start: "top bottom", end: "bottom bottom", scrub: true },
+          })
+          .fromTo("[data-cta-line]", { scaleX: 0 }, { scaleX: 1, duration: 0.7 }, 0)
+          .fromTo("[data-cta-flare]", { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1, duration: 0.5 }, 0.45);
       });
     },
     root
@@ -27,6 +37,12 @@ export function AboutCta() {
         ref={root}
         className="bg-void pb-[max(6rem,calc(env(safe-area-inset-bottom)+4rem))] md:pb-[max(8rem,calc(env(safe-area-inset-bottom)+5rem))]"
       >
+        <div className={chapterInner}>
+          <div aria-hidden className="pointer-events-none relative mb-12 flex items-center md:mb-16">
+            <div data-cta-line className="horizon-line w-full origin-left" />
+            <div data-cta-flare className="horizon-flare absolute left-[22%] top-1/2 -translate-x-1/2 -translate-y-1/2" />
+          </div>
+        </div>
         <div
           className={cn(
             chapterInner,

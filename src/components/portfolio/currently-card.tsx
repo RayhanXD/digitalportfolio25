@@ -203,7 +203,7 @@ export function CurrentlyCard({ className }: { className?: string }) {
               {item.label}
             </span>
             <span className="text-on-surface-variant">
-              {item.title} — {item.detail}
+              {item.title}: {item.detail}
             </span>
           </li>
         ))}

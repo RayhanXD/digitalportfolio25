@@ -6,6 +6,7 @@ import { EASE, gsap, MQ, useGsap } from "@/lib/motion";
 import { SplitChars } from "@/components/motion/split-text";
 import { Magnetic } from "@/components/motion/magnetic";
 import { usePlayOnIntro } from "@/components/portfolio/intro-phase";
+import { HeroDepthPlane } from "@/components/portfolio/hero-depth";
 
 /** Each name line is clipped only at its bottom edge, so letters rise out from below it. */
 const nameLineClass = "block [clip-path:inset(-50%_-100vw_0_-100vw)]";
@@ -59,7 +60,8 @@ export function HomeHero() {
             { opacity: 1, y: 0, duration: 1.2, stagger: 0.09 },
             1.15
           )
-          .fromTo("[data-hero-cue]", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 1.7);
+          .fromTo("[data-hero-cue]", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 1.7)
+          .fromTo("[data-depth-plane]", { opacity: 0 }, { opacity: 1, duration: 2.4, ease: "power2.out" }, 0.6);
         intro.current = tl;
         if (introReady.current) tl.play();
 
@@ -76,7 +78,39 @@ export function HomeHero() {
           .to("[data-hero-horizon]", { opacity: 0, scaleX: 1.15 }, 0)
           .to("[data-hero-top]", { opacity: 0, y: -40 }, 0)
           .to("[data-hero-ctas]", { opacity: 0, y: -60 }, 0)
-          .to("[data-hero-cue-wrap]", { opacity: 0 }, 0);
+          .to("[data-hero-cue-wrap]", { opacity: 0 }, 0)
+          // Depth: the far stars lag behind the page, the near dust flies past the camera
+          .to('[data-depth="back"]', { yPercent: desktop ? 9 : 5 }, 0)
+          .to('[data-depth="front"]', { yPercent: desktop ? -34 : -18, scale: 1.3 }, 0);
+
+        // Pointer depth: each plane follows the cursor by its own distance (mouse/trackpad only)
+        if (desktop && window.matchMedia(MQ.fine).matches) {
+          // The name and the horizon it rests on move together, so the contact line never slips
+          const planes = [
+            { sel: '[data-depth="back"]', px: 8 },
+            { sel: '[data-depth="name"], [data-hero-horizon]', px: 14 },
+            { sel: '[data-depth="front"]', px: 46 },
+          ].flatMap(({ sel, px }) =>
+            gsap.utils.toArray<HTMLElement>(sel, root.current).map((el) => ({
+              px,
+              x: gsap.quickTo(el, "x", { duration: 1.4, ease: "power3.out" }),
+              y: gsap.quickTo(el, "y", { duration: 1.4, ease: "power3.out" }),
+            }))
+          );
+          const onMove = (e: PointerEvent) => {
+            const nx = e.clientX / window.innerWidth - 0.5;
+            const ny = e.clientY / window.innerHeight - 0.5;
+            planes.forEach((p) => {
+              p.x(-nx * p.px);
+              p.y(-ny * p.px * 0.6);
+            });
+          };
+          window.addEventListener("pointermove", onMove);
+          return () => {
+            window.removeEventListener("pointermove", onMove);
+            intro.current = null;
+          };
+        }
 
         return () => {
           intro.current = null;
@@ -93,7 +127,16 @@ export function HomeHero() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_75%_42%_at_50%_38%,rgba(0,0,0,0.55),transparent_72%)]"
         aria-hidden
       />
-      <div className="absolute inset-x-0 top-0 bottom-1/2 flex flex-col items-center justify-end px-5 pb-[clamp(0.75rem,2.2svh,1.5rem)] text-center sm:px-6 md:px-8 lg:px-10">
+      {/* Far plane: stars that add to the planet footage behind */}
+      <div
+        data-depth="back"
+        data-depth-plane
+        className="pointer-events-none absolute -inset-[6%] mix-blend-screen will-change-transform"
+        aria-hidden
+      >
+        <HeroDepthPlane kind="stars" className="opacity-70" />
+      </div>
+      <div data-depth="name" className="absolute inset-x-0 top-0 bottom-1/2 flex flex-col items-center justify-end px-5 pb-[clamp(0.75rem,2.2svh,1.5rem)] text-center sm:px-6 md:px-8 lg:px-10">
         <h1
           data-hero-name
           className="font-headline text-[clamp(3.5rem,min(15vw,24svh),12rem)] font-black leading-[0.8] tracking-tighter text-white"
@@ -157,11 +200,21 @@ export function HomeHero() {
         </div>
       </div>
 
+      {/* Near plane: out-of-focus dust in front of the name; it overtakes everything on scroll */}
+      <div
+        data-depth="front"
+        data-depth-plane
+        className="pointer-events-none absolute -inset-[8%] z-[5] will-change-transform"
+        aria-hidden
+      >
+        <HeroDepthPlane kind="dust" />
+      </div>
+
       <div data-hero-cue-wrap className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 md:bottom-10">
         <a
           data-hero-cue
-          href="#work"
-          aria-label="Scroll to work"
+          href="#intro"
+          aria-label="Scroll to introduction"
           className="group flex flex-col items-center gap-3"
         >
           <span className="font-label text-[10px] uppercase tracking-[0.4em] text-white/40 transition-colors group-hover:text-white/70">

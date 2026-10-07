@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { EASE, gsap, MQ, useGsap } from "@/lib/motion";
+import { EASE, gsap, MQ, ScrollTrigger, useGsap } from "@/lib/motion";
 import { SplitChars } from "@/components/motion/split-text";
 import { usePlayOnIntro } from "@/components/portfolio/intro-phase";
 import { useShaderSpeed } from "@/components/portfolio/about-shell";
@@ -135,7 +135,29 @@ export function ChapterBand(props: ChapterBandProps) {
               );
             });
           });
-          return;
+
+          // The letters lean into the scroll: faster scrolling, more lean, settling upright the
+          // moment the page stops. Both copies move together so fill and outline stay in register.
+          const lines = el.querySelectorAll<HTMLElement>("[data-band-line]");
+          const lean = gsap.quickTo(lines, "skewX", { duration: 0.7, ease: "power3.out" });
+          let settle: gsap.core.Tween | null = null;
+          const velocity = ScrollTrigger.create({
+            trigger: el,
+            start: "top bottom",
+            end: "bottom top",
+            onUpdate: (self) => {
+              lean(gsap.utils.clamp(-7, 7, -self.getVelocity() / 260));
+              settle?.kill();
+              settle = gsap.delayedCall(0.12, () => lean(0));
+            },
+            onToggle: (self) => {
+              if (!self.isActive) lean(0);
+            },
+          });
+          return () => {
+            settle?.kill();
+            velocity.kill();
+          };
         }
 
         // ── Fly-through ──

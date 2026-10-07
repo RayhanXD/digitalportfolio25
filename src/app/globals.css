@@ -355,6 +355,27 @@
     opacity: 0.8;
   }
 
+  /* Experience horizon: lit behind the sun (the past), cooling toward the future */
+  .xp-horizon {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 181, 153, 0) 0%,
+      rgba(255, 181, 153, 0.55) calc(var(--needle) * 0.5),
+      rgba(255, 255, 255, 0.95) var(--needle),
+      rgba(120, 180, 232, 0.45) calc(var(--needle) + 22%),
+      rgba(120, 180, 232, 0.08) 100%
+    );
+  }
+
+  .xp-horizon::before {
+    content: "";
+    position: absolute;
+    inset: -3px 0;
+    background: inherit;
+    filter: blur(6px);
+    opacity: 0.7;
+  }
+
   .horizon-flare {
     width: min(36rem, 70vw);
     height: 5rem;
