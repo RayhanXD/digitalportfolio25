@@ -6,6 +6,14 @@ export type ProjectStat = {
   label: string;
 };
 
+export type ProjectMedia = {
+  video: string;
+  /** Crop for footage shared with another surface, so it reads as its own shot */
+  crop?: { origin: string; scale: number; flip?: boolean };
+  /** Grade for footage bright enough to fight copy laid over it */
+  grade?: string;
+};
+
 export type Project = {
   slug: string;
   name: string;
@@ -16,11 +24,13 @@ export type Project = {
   href: string;
   linkLabel: string;
   accent: "blue" | "orange";
+  /** When it shipped, from EXPERIENCE_BANK.md */
+  date: string;
   /**
-   * Looping clip for the panel's poster, e.g. "/projects/selfpi.mp4" in /public.
-   * Until one is set, the poster renders a generated horizon in the project's accent.
+   * Looping footage for the project's frame, shared by Home and Projects. Without it the
+   * poster renders a generated horizon in the project's accent.
    */
-  video?: string;
+  media?: ProjectMedia;
   /** Composition of the generated horizon poster */
   horizon: { tilt: number; top: string; size: string };
 };
@@ -37,6 +47,8 @@ export const PROJECTS: readonly Project[] = [
     href: "https://github.com/RayhanXD/selfpi",
     linkLabel: "View on GitHub",
     accent: "blue",
+    date: "Jul 2026",
+    media: { video: "/wave-lattice-card.mp4" },
     horizon: { tilt: -8, top: "58%", size: "180%" },
   },
   {
@@ -50,6 +62,12 @@ export const PROJECTS: readonly Project[] = [
     href: "https://github.com/RayhanXD/CSB-Hack-Day.git",
     linkLabel: "View on GitHub",
     accent: "blue",
+    date: "Feb 2026",
+    media: {
+      video: "/agentic-search.mp4",
+      crop: { origin: "50% 50%", scale: 1, flip: true },
+      grade: "brightness(0.8) saturate(1.1)",
+    },
     horizon: { tilt: 6, top: "64%", size: "220%" },
   },
   {
@@ -63,6 +81,8 @@ export const PROJECTS: readonly Project[] = [
     href: "https://github.com/RayhanXD/raygent",
     linkLabel: "View on GitHub",
     accent: "orange",
+    date: "Feb 2026",
+    media: { video: "/projects-section-bg.mp4" },
     horizon: { tilt: -14, top: "52%", size: "150%" },
   },
   {
@@ -76,6 +96,12 @@ export const PROJECTS: readonly Project[] = [
     href: "https://apps.apple.com/us/app/ccai-campus-connect-ai/id6757893694",
     linkLabel: "View on the App Store",
     accent: "orange",
+    date: "Jul 2025",
+    media: {
+      // The home background is this same footage, so frame the lit limb and city lights instead
+      video: "/campus-connect-ai.mp4",
+      crop: { origin: "100% 62%", scale: 1.75 },
+    },
     horizon: { tilt: 10, top: "60%", size: "200%" },
   },
   {
@@ -89,6 +115,7 @@ export const PROJECTS: readonly Project[] = [
     href: "https://github.com/RayhanXD/C.Y.R.U.S.",
     linkLabel: "View on GitHub",
     accent: "blue",
+    date: "May 2025",
     horizon: { tilt: -4, top: "55%", size: "165%" },
   },
 ];

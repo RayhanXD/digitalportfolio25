@@ -2,41 +2,49 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { EASE, gsap, MQ, revealOnScroll, scrubTextFill, useGsap } from "@/lib/motion";
+import { ArrowUpRight } from "lucide-react";
+import { EASE, gsap, MQ, scrubTextFill, useGsap } from "@/lib/motion";
 import { SplitChars } from "@/components/motion/split-text";
 import { Magnetic } from "@/components/motion/magnetic";
 
+const EMAIL = "rayriz.mohammad@gmail.com";
+const CHANNELS = [
+  { label: "GitHub", href: "https://github.com/RayhanXD" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/rayhan-mohammad1" },
+] as const;
+
+/** Each line is clipped only at its bottom edge, so letters rise out from below it. */
+const lineClass = "block [clip-path:inset(-50%_-100vw_0_-100vw)]";
+
+/**
+ * The bookend. The hero's composition returns: two lines of type resting on the horizon,
+ * the way to reach me underneath it, while the background lifts back to the sunrise.
+ * It's the last screen of the page, so it holds rather than trailing into a footer.
+ */
 export function HomeCta() {
   const root = useRef<HTMLElement>(null);
 
   useGsap(
     (mm) => {
       mm.add(MQ.motion, () => {
-        gsap.fromTo(
-          "[data-cta-title] [data-char]",
-          { yPercent: 110 },
-          {
-            yPercent: 0,
-            duration: 1.3,
-            ease: EASE.cinematic,
-            stagger: 0.05,
-            scrollTrigger: { trigger: "[data-cta-title]", start: "top 88%", once: true },
-          }
-        );
-        // The page ends shortly below this title, so the fill completes higher than usual
-        scrubTextFill("[data-cta-fill]", "[data-cta-title]", { start: "top 92%", end: "top 62%" });
-        revealOnScroll(["[data-cta-copy]", "[data-cta-email]"], "[data-cta-copy]", { stagger: 0.12 });
-        gsap.fromTo(
-          "[data-cta-underline]",
-          { scaleX: 0 },
-          {
-            scaleX: 1,
-            duration: 1.4,
-            ease: EASE.cinematic,
-            delay: 0.35,
-            scrollTrigger: { trigger: "[data-cta-email]", start: "top 90%", once: true },
-          }
-        );
+        const enter = { trigger: root.current, start: "top 55%", once: true } as const;
+
+        gsap
+          .timeline({ defaults: { ease: EASE.cinematic }, scrollTrigger: enter })
+          .fromTo('[data-cta-line="1"] [data-char]', { yPercent: 115 }, { yPercent: 0, duration: 1.4, stagger: { each: 0.04, from: "center" } }, 0)
+          .fromTo('[data-cta-line="2"] > span', { yPercent: 115 }, { yPercent: 0, duration: 1.4 }, 0.12)
+          .fromTo("[data-cta-below]", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 1.2, stagger: 0.09 }, 0.5);
+
+        // The horizon draws back across the screen and its light returns as the section arrives
+        gsap
+          .timeline({
+            defaults: { ease: "none" },
+            scrollTrigger: { trigger: root.current, start: "top bottom", end: "top 30%", scrub: true },
+          })
+          .fromTo("[data-cta-rule]", { scaleX: 0 }, { scaleX: 1 }, 0)
+          .fromTo("[data-cta-flare]", { opacity: 0, scaleX: 0.3 }, { opacity: 1, scaleX: 1 }, 0.25);
+
+        scrubTextFill("[data-cta-fill]", root.current!, { start: "top 40%", end: "top top" });
       });
     },
     root
@@ -46,44 +54,95 @@ export function HomeCta() {
     <section
       ref={root}
       id="home-cta"
-      className="relative overflow-hidden py-28 text-center md:py-40 lg:py-48"
+      aria-labelledby="cta-title"
+      className="relative h-[100svh] min-h-[38rem] overflow-hidden"
     >
-      <div className="mx-auto max-w-screen-2xl px-5 sm:px-6 md:px-8 lg:px-10">
+      {/* Keeps the type legible once the background's sunrise is back behind it */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_40%_at_50%_40%,rgba(0,0,0,0.5),transparent_72%)]"
+        aria-hidden
+      />
+
+      <div className="absolute inset-x-0 top-0 bottom-1/2 flex flex-col items-center justify-end px-5 pb-[clamp(0.75rem,2.2svh,1.5rem)] text-center sm:px-6">
         <h2
-          data-cta-title
-          className="font-headline mb-10 text-5xl font-black uppercase tracking-tighter text-white md:text-7xl lg:text-8xl"
+          id="cta-title"
+          className="font-headline text-[clamp(3.5rem,min(15vw,24svh),12rem)] font-black uppercase leading-[0.8] tracking-tighter text-white"
         >
-          <span className="inline-block [clip-path:inset(-20%_-10%_0_-10%)]">
-            <SplitChars text="LET'S" />
-          </span>{" "}
-          <span data-cta-fill className="text-outline-fill">
-            BUILD
+          <span className="sr-only">Let&apos;s build</span>
+          <span data-cta-line="1" className={lineClass} aria-hidden>
+            <SplitChars text="LET'S" srLabel={false} />
+          </span>
+          <span data-cta-line="2" className={lineClass} aria-hidden>
+            <span data-cta-fill className="text-outline-fill inline-block motion-reduce:[background-position:0%_0%]">
+              BUILD
+            </span>
           </span>
         </h2>
+      </div>
+
+      <div
+        className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 items-center justify-center"
+        aria-hidden
+      >
+        <div data-cta-rule className="horizon-line w-[min(94vw,84rem)]" />
+        <div
+          data-cta-flare
+          className="horizon-flare absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        />
+      </div>
+
+      <div className="absolute inset-x-0 top-1/2 bottom-0 flex flex-col items-center px-5 pt-[clamp(1.5rem,4svh,2.5rem)] text-center sm:px-6">
         <p
-          data-cta-copy
-          className="mx-auto mb-10 max-w-xl text-lg font-light italic text-on-surface-variant"
+          data-cta-below
+          className="max-w-[44ch] text-base font-light leading-relaxed text-on-surface-variant md:text-lg [text-wrap:balance]"
         >
-          Open to internships, research, and teams shipping agentic AI, ML infrastructure, and
-          full-stack product.
+          Open to Summer 2027 internships in software engineering, machine learning, and agentic
+          AI.
         </p>
-        <div data-cta-email>
-          <Magnetic strength={0.18}>
+        <div
+          data-cta-below
+          className="mt-[clamp(1.5rem,4.5svh,2.75rem)] flex flex-col items-center gap-5 sm:flex-row sm:gap-8"
+        >
+          <Magnetic>
             <Link
-              className="font-headline group relative inline-block pb-3 text-2xl font-bold text-white transition-colors duration-300 hover:text-tertiary-singularity md:text-3xl"
-              href="mailto:rayriz.mohammad@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
+              className="font-label block rounded bg-white px-10 py-4 text-sm font-bold uppercase tracking-widest text-on-primary-fixed transition-[box-shadow,transform] duration-200 hover:shadow-[0_10px_30px_-8px_rgba(255,181,153,0.45)] focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-white active:scale-[0.97]"
             >
-              RAYRIZ.MOHAMMAD@GMAIL.COM
-              <span
-                data-cta-underline
-                className="absolute inset-x-0 bottom-0 h-1 origin-left bg-tertiary-singularity"
-                aria-hidden
-              />
+              Get in touch
             </Link>
           </Magnetic>
+          <a
+            href={`mailto:${EMAIL}`}
+            className="font-label border-b border-white/25 pb-1 text-sm tracking-[0.08em] text-white transition-colors duration-200 hover:border-tertiary-singularity hover:text-tertiary-singularity focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+          >
+            {EMAIL}
+          </a>
         </div>
+      </div>
+
+      {/* Colophon: the page finishes here, quietly */}
+      <div
+        data-cta-below
+        className="absolute inset-x-5 bottom-[calc(env(safe-area-inset-bottom)+1.25rem)] flex items-center justify-between gap-4 sm:inset-x-6 md:inset-x-8 lg:inset-x-10"
+      >
+        <p className="font-label text-[10px] uppercase tracking-[0.25em] text-white/45">
+          © 2026 Rayhan Mohammad
+        </p>
+        <ul className="flex items-center gap-6">
+          {CHANNELS.map((channel) => (
+            <li key={channel.label}>
+              <a
+                href={channel.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-label group inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.25em] text-white/60 transition-colors duration-200 hover:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+              >
+                {channel.label}
+                <ArrowUpRight className="size-3" aria-hidden />
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

@@ -217,3 +217,85 @@ export const INTRO_STATS: readonly Metric[] = [
   { value: 8, label: "Roles" },
   { value: 2, suffix: "×", label: "Hackathon wins" },
 ];
+
+export type Evidence = { name: string; kind: "Role" | "Research" | "Project" | "Campus" };
+
+/**
+ * Where each toolkit item actually shipped. Every entry traces to a stack or bullet in
+ * EXPERIENCE_BANK.md; update both together.
+ */
+export const TOOL_EVIDENCE: Readonly<Record<string, readonly Evidence[]>> = {
+  Python: [
+    { name: "Humana", kind: "Role" },
+    { name: "PGA of America", kind: "Role" },
+    { name: "UT CCBB", kind: "Research" },
+    { name: "SelfPI", kind: "Project" },
+    { name: "Keystone", kind: "Project" },
+    { name: "Raygent", kind: "Project" },
+    { name: "Campus Connect AI", kind: "Project" },
+    { name: "C.Y.R.U.S.", kind: "Project" },
+    { name: "TradeX", kind: "Project" },
+  ],
+  TypeScript: [
+    { name: "Texas Convergent", kind: "Campus" },
+    { name: "SelfPI", kind: "Project" },
+    { name: "Raygent", kind: "Project" },
+  ],
+  JavaScript: [
+    { name: "Krowe", kind: "Role" },
+    { name: "Nixar", kind: "Role" },
+    { name: "Syntra", kind: "Project" },
+  ],
+  React: [
+    { name: "Krowe", kind: "Role" },
+    { name: "Nixar", kind: "Role" },
+    { name: "B.A.X.A.", kind: "Campus" },
+    { name: "SelfPI", kind: "Project" },
+    { name: "Keystone", kind: "Project" },
+    { name: "Raygent", kind: "Project" },
+    { name: "Campus Connect AI", kind: "Project" },
+  ],
+  "Node.js": [
+    { name: "Texas Convergent", kind: "Campus" },
+    { name: "Syntra", kind: "Project" },
+  ],
+  FastAPI: [
+    { name: "PGA of America", kind: "Role" },
+    { name: "Krowe", kind: "Role" },
+    { name: "SelfPI", kind: "Project" },
+    { name: "Keystone", kind: "Project" },
+    { name: "Campus Connect AI", kind: "Project" },
+    { name: "TradeX", kind: "Project" },
+  ],
+  LangGraph: [
+    { name: "Keystone", kind: "Project" },
+    { name: "Raygent", kind: "Project" },
+  ],
+  TensorFlow: [{ name: "C.Y.R.U.S.", kind: "Project" }],
+  Keras: [
+    { name: "B.A.X.A.", kind: "Campus" },
+    { name: "C.Y.R.U.S.", kind: "Project" },
+  ],
+  PostgreSQL: [{ name: "Campus Connect AI", kind: "Project" }],
+  MongoDB: [
+    { name: "Texas Convergent", kind: "Campus" },
+    { name: "SelfPI", kind: "Project" },
+    { name: "Syntra", kind: "Project" },
+  ],
+  Docker: [{ name: "PGA of America", kind: "Role" }],
+  AWS: [
+    { name: "SelfPI", kind: "Project" },
+    { name: "Syntra", kind: "Project" },
+  ],
+  "Azure DevOps": [{ name: "Humana", kind: "Role" }],
+  "CI/CD": [
+    { name: "Humana", kind: "Role" },
+    { name: "PGA of America", kind: "Role" },
+    { name: "Nixar", kind: "Role" },
+    { name: "Campus Connect AI", kind: "Project" },
+  ],
+  Git: [{ name: "UT CCBB", kind: "Research" }],
+  Supabase: [{ name: "B.A.X.A.", kind: "Campus" }],
+  RAG: [{ name: "PGA of America", kind: "Role" }],
+  "Vector embeddings": [{ name: "Campus Connect AI", kind: "Project" }],
+};

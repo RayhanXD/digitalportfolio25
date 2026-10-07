@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { ProjectsWaveShell } from "@/components/portfolio/projects-wave-shell";
 import { ProjectsHeader } from "@/components/portfolio/projects-header";
@@ -15,13 +14,6 @@ export default function ProjectsPage() {
     <ProjectsWaveShell>
       <ProjectsHeader />
       <ProjectsGallery />
-      <p className="mx-auto mt-16 max-w-screen-2xl px-5 text-center text-sm text-neutral-400 sm:px-6 md:px-8 lg:px-10">
-        More context on the{" "}
-        <Link href="/" className="text-secondary-singularity underline-offset-4 hover:underline">
-          home
-        </Link>{" "}
-        page and in my resume.
-      </p>
     </ProjectsWaveShell>
   );
 }

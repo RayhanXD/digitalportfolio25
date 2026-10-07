@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type CSSProperties, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { countUp, EASE, gsap, MQ, ScrollTrigger, useGsap } from "@/lib/motion";
 import { ChapterBand, chapterInner } from "@/components/portfolio/chapter-band";
 import { ROLES, type Metric } from "@/components/portfolio/about-data";
@@ -8,7 +8,60 @@ import { cn } from "@/lib/utils";
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-const pad = (n: number) => String(n).padStart(2, "0");
+/** The year a role started, from its dates line ("May → Aug 2025" → "2025") */
+const startYear = (dates: string) => dates.match(/\d{4}/)?.[0] ?? "";
+
+const DIGITS = "0123456789".split("");
+
+/**
+ * The focused role's start year as an odometer: each digit is a strip that rolls through the
+ * numbers in between, so moving from 2026 to 2023 visibly winds back. It stays mounted while the
+ * stage below it re-keys, which is what lets it roll rather than reset.
+ */
+function YearOdometer({ year }: { year: string }) {
+  const root = useRef<HTMLParagraphElement>(null);
+  // Strips are positioned by a custom property GSAP owns after mount; React only sets the first
+  const [initial] = useState(year);
+
+  useIsomorphicLayoutEffect(() => {
+    const strips = root.current?.querySelectorAll<HTMLElement>("[data-odo-strip]");
+    if (!strips) return;
+    const reduce = window.matchMedia(MQ.reduce).matches;
+    strips.forEach((strip, i) => {
+      gsap.to(strip, {
+        "--d": Number(year[i] ?? 0),
+        duration: reduce ? 0 : 0.9,
+        ease: "power3.inOut",
+        delay: reduce ? 0 : i * 0.05,
+        overwrite: true,
+      });
+    });
+  }, [year]);
+
+  return (
+    <p
+      ref={root}
+      className="font-headline flex text-6xl font-black leading-none tracking-tighter text-white xl:text-7xl"
+    >
+      <span className="sr-only">Started {year}</span>
+      {initial.split("").map((digit, i) => (
+        <span key={i} aria-hidden className="relative inline-block h-[1em] overflow-hidden tabular-nums">
+          <span
+            data-odo-strip
+            className="flex flex-col [transform:translateY(calc(var(--d)*-10%))]"
+            style={{ "--d": Number(digit) } as CSSProperties}
+          >
+            {DIGITS.map((n) => (
+              <span key={n} className="block h-[1em]">
+                {n}
+              </span>
+            ))}
+          </span>
+        </span>
+      ))}
+    </p>
+  );
+}
 
 function MetricValue({ metric, countable }: { metric: Metric; countable?: boolean }) {
   return (
@@ -55,16 +108,7 @@ function Stage({ index }: { index: number }) {
   return (
     <div ref={root} className="flex h-full flex-col justify-between">
       <div>
-        <div className="overflow-hidden">
-          <p
-            data-stage-roll
-            className="font-headline text-6xl font-black tabular-nums tracking-tighter text-white xl:text-7xl"
-          >
-            {pad(index + 1)}
-            <span className="text-2xl text-white/25 xl:text-3xl"> / {pad(ROLES.length)}</span>
-          </p>
-        </div>
-        <div className="mt-6 overflow-hidden pb-1">
+        <div className="overflow-hidden pb-1">
           <h3
             data-stage-roll
             className="font-headline text-3xl font-bold leading-[1.05] tracking-tight text-white xl:text-4xl"
@@ -194,8 +238,11 @@ export function AboutExperience() {
       <div ref={root} className="relative bg-void py-[clamp(4rem,10vh,7rem)]">
         <div className={cn(chapterInner, "grid grid-cols-1 gap-10 lg:grid-cols-12")}>
           <div className="hidden lg:col-span-5 lg:block" aria-hidden>
-            <div className="sticky top-[18vh] h-[64vh]">
-              <Stage key={active} index={active} />
+            <div className="sticky top-[18vh] flex h-[64vh] flex-col">
+              <YearOdometer year={startYear(ROLES[active].dates)} />
+              <div className="mt-6 min-h-0 flex-1">
+                <Stage key={active} index={active} />
+              </div>
             </div>
           </div>
 
@@ -208,11 +255,14 @@ export function AboutExperience() {
               <div
                 data-role-dot
                 className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.9),0_0_28px_rgba(120,180,232,0.7)]"
-              />
+              >
+                {/* The homepage's sun, riding this line instead of the horizon */}
+                <span className="absolute left-1/2 top-1/2 h-40 w-24 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_50%_50%_at_center,rgba(255,255,255,0.4)_0%,rgba(255,181,153,0.18)_32%,rgba(120,180,232,0.06)_55%,transparent_72%)]" />
+              </div>
             </div>
 
             <ol>
-              {ROLES.map((role, i) => (
+              {ROLES.map((role) => (
                 <li
                   key={`${role.org}-${role.title}`}
                   data-role-row
@@ -225,7 +275,7 @@ export function AboutExperience() {
                     aria-hidden
                   />
                   <p className="font-label mb-3 text-[10px] uppercase tracking-[0.3em] text-neutral-500">
-                    {pad(i + 1)} · {role.dates}
+                    {role.dates}
                   </p>
                   <h3 className="font-headline text-[clamp(2.25rem,4.6vw,5rem)] font-black uppercase leading-[0.9] tracking-tighter text-white">
                     {role.index}
